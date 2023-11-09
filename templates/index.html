@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daten Anzeigen</title>
+</head>
+<body>
+    <h1>Daten aus der Datenbank</h1>
+    <table>
+        <tr>
+            <th>Spalte 1</th>
+            <th>Spalte 2</th>
+            <th>Spalte 3</th>
+            <th>Spalte 4</th>
+        </tr>
+        {% for datensatz in daten %}
+            <tr>
+                <td>{{ datensatz[0] }}</td>
+                <td>{{ datensatz[1] }}</td>
+                <td>{{ datensatz[2] }}</td>
+                <td>{{ datensatz[3] }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
