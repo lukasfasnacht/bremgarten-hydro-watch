@@ -9,17 +9,17 @@
     <h1>Daten aus der Datenbank</h1>
     <table>
         <tr>
-            <th>Spalte 1</th>
-            <th>Spalte 2</th>
-            <th>Spalte 3</th>
-            <th>Spalte 4</th>
+            <th>Date</th>
+            <th>Abfluss</th>
+            <th>Wasserspiegel</th>
+            <th>Temperatur</th>
         </tr>
         {% for datensatz in daten %}
             <tr>
-                <td>{{ datensatz[0] }}</td>
                 <td>{{ datensatz[1] }}</td>
-                <td>{{ datensatz[2] }}</td>
-                <td>{{ datensatz[3] }}</td>
+                <td>{{ datensatz[2] }} m³/s</td>
+                <td>{{ datensatz[3] }} m ü.M.</td>
+                <td>{{ datensatz[4] }} °C</td>
             </tr>
         {% endfor %}
     </table>

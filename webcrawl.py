@@ -28,7 +28,7 @@ def crawl_and_save():
         
         with open("raw_data.csv", "w", newline="", encoding="utf-8") as csvfile:
             csvwriter = csv.writer(csvfile)
-        
+                    
             for row in rows:
                 cells = row.find_all(["th", "td"])  # Hier werden sowohl Headerzellen ("th") als auch Datenzellen ("td") berücksichtigt
                 data = [cell.get_text() for cell in cells]
@@ -81,18 +81,21 @@ def crawl_and_save():
 
     # Tabelle erstellen
     cursor.execute("""
-        CREATE TABLE IF NOT EXISTS meine_tabelle (
-            spalte1 TEXT,
-            spalte2 INTEGER,
-            spalte3 REAL,
-            spalte4 REAL
+        CREATE TABLE IF NOT EXISTS reuss (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            timestamp TEXT,
+            abfluss INTEGER,
+            wasserstand REAL,
+            temperatur REAL
         )
     """)
     connection.commit()
 
-    # Daten in die Datenbank einfügen
+    # Daten in die Datenbank einfügen ohne Primärschlüssel
     for datensatz in daten:
-        cursor.execute("INSERT INTO meine_tabelle VALUES (?, ?, ?, ?)", datensatz)
+        cursor.execute("INSERT INTO reuss (timestamp, abfluss, wasserstand, temperatur) VALUES (?, ?, ?, ?)", datensatz)
+
+
 
     connection.commit()
 
@@ -102,7 +105,7 @@ def crawl_and_save():
     print("Daten in die Datenbank eingefügt")
 
 # Scheduler für alle halbe Stunde
-schedule.every(5).minutes.do(crawl_and_save)
+schedule.every(1).minutes.do(crawl_and_save)
 
 # Endlosschleife, um das Skript am Laufen zu halten
 while True:

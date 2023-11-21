@@ -10,13 +10,13 @@ def anzeigen():
     cursor = connection.cursor()
 
     # Daten aus der Tabelle abrufen
-    cursor.execute('SELECT * FROM meine_tabelle')
+    cursor.execute('SELECT * FROM reuss')
     daten = cursor.fetchall()
 
-    # Verbindung schließen
+    # Verbindung schlie ^=en
     connection.close()
 
-    # HTML-Template rendern und Daten übergeben
+    # HTML-Template rendern und Daten hergeben
     return render_template('index.html', daten=daten)
 
 if __name__ == '__main__':
