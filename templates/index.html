@@ -1,27 +1,69 @@
+<!-- Dein HTML-Template (index.html) -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daten Anzeigen</title>
+    <title>Hydrodaten</title>
+    <style>
+        .green-cell {
+            background-color: lightgreen;
+        }
+        .darkgreen-cell {
+            background-color: darkgreen;
+        }
+        .mediumseagreen-cell {
+            background-color: mediumseagreen;
+        }
+        .forestgreen-cell {
+            background-color: forestgreen;
+        }
+        .coral-cell {
+            background-color: coral;
+        }
+        .darkred-cell {
+            background-color: darkred;
+        }
+        .firebrick-cell {
+            background-color: firebrick;
+        }
+    </style>
 </head>
 <body>
-    <h1>Daten aus der Datenbank</h1>
+    <form method="post" action="/">
+        <label for="abfluss_filter">Abfluss größer oder gleich:</label>
+        <input type="number" name="abfluss_filter" id="abfluss_filter" value="{{ abfluss_filter }}">
+        <button type="submit">Filter anwenden</button>
+        <button type="submit" name="reset_filter" onclick="clearFilter()">Filter zurücksetzen</button>
+    </form>
+
     <table>
-        <tr>
-            <th>Date</th>
-            <th>Abfluss</th>
-            <th>Wasserspiegel</th>
-            <th>Temperatur</th>
-        </tr>
-        {% for datensatz in daten %}
+        <thead>
             <tr>
-                <td>{{ datensatz[1] }}</td>
-                <td>{{ datensatz[2] }} m³/s</td>
-                <td>{{ datensatz[3] }} m ü.M.</td>
-                <td>{{ datensatz[4] }} °C</td>
+                <th>ID</th>
+                <th>Timestamp</th>
+                <th>Abfluss</th>
+                <th>Wasserstand</th>
+                <th>Temperatur</th>
             </tr>
-        {% endfor %}
+        </thead>
+        <tbody>
+            {% for row in daten %}
+                <tr>
+                    <td>{{ row[0] }}</td>
+                    <td>{{ row[1] }}</td>
+                    <td class="{% if row[2]|int >= 350 %}firebrick-cell{% elif row[2]|int >= 300 %}darkred-cell{% elif row[2]|int >= 250 %}coral-cell{% elif row[2]|int >= 200 %}forestgreen-cell{% elif row[2]|int >= 180 %}mediumseagreen-cell{% elif row[2]|int >= 0 %}green-cell{% else %}{{ '' }}{% endif %}">{{ row[2] }}</td>
+                    <td>{{ row[3] }}</td>
+                    <td>{{ row[4] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
     </table>
+
+    <script>
+        function clearFilter() {
+            document.getElementById('abfluss_filter').value = '';
+        }
+    </script>
 </body>
 </html>
