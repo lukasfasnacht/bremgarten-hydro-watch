@@ -31,8 +31,15 @@
 </head>
 <body>
     <form method="post" action="/">
-        <label for="abfluss_filter">Abfluss größer oder gleich:</label>
+        <label for="abfluss_filter">Abfluss:</label>
         <input type="number" name="abfluss_filter" id="abfluss_filter" value="{{ abfluss_filter }}">
+        
+        <!-- Dropdown-Menü für Vergleichsoperation -->
+        <select name="comparison_operator" id="comparison_operator">
+            <option value="greater_equal" {% if comparison_operator == 'greater_equal' %}selected{% endif %}>Größer oder gleich</option>
+            <option value="exact" {% if comparison_operator == 'exact' %}selected{% endif %}>Genau</option>
+        </select>
+        
         <button type="submit">Filter anwenden</button>
         <button type="submit" name="reset_filter" onclick="clearFilter()">Filter zurücksetzen</button>
     </form>
