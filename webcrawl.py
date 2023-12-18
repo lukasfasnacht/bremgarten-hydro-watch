@@ -9,9 +9,13 @@ from datetime import datetime
 # Funktion zum Crawlen der Website und Speichern der Daten in einer CSV-Datei, CSV Daten bereinigen und in DB abspeichern
 def crawl_and_save():
     url = "https://www.hydrodaten.admin.ch/de/seen-und-fluesse/stationen-und-daten/2018"
-    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"}
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+        "Referer": "https://hydrodaten.admin.ch" 
+    }
     response = requests.get(url, headers=headers)
-
+    
     if response.status_code == 200:
         html_content = response.text
         soup = BeautifulSoup(html_content, "html.parser")
@@ -33,7 +37,7 @@ def crawl_and_save():
                     csvwriter.writerow(data)
 
         else:
-            print("Die Tabelle mit der Klasse 'table-carousel sensors-table columns-3' wurde nicht gefunden.")
+            print("Die Tabelle wurde nicht gefunden.")
     else:
         print("Fehler beim Abrufen der Webseite.")
     
@@ -118,7 +122,7 @@ def crawl_and_save():
     print("Daten in die Datenbank eingefügt")
 
 # Scheduler für alle halbe Stunde
-schedule.every(1).minutes.do(crawl_and_save)
+schedule.every(30).minutes.do(crawl_and_save)
 
 # Endlosschleife, um das Skript am Laufen zu halten
 while True:
