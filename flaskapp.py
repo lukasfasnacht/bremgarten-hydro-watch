@@ -1,7 +1,31 @@
 from flask import Flask, render_template, request
 import sqlite3
+import matplotlib.pyplot as plt
+plt.switch_backend('Agg')
+from io import BytesIO
+import base64
+from datetime import datetime
 
 app = Flask(__name__)
+
+def generate_plot(dates, abflussData):
+    plt.figure(figsize=(10, 6))
+    plt.plot(dates, abflussData, marker='o', linestyle='-', color='blue')
+    plt.xlabel('')
+    plt.ylabel('Abfluss in m³/s')
+    plt.title('Abflussdaten der angezeigten Messwerte')
+    plt.gca().xaxis.set_major_formatter(plt.matplotlib.dates.DateFormatter('%d.%m.%Y %H:%M'))
+    plt.gcf().autofmt_xdate()
+
+    # Speichern Sie das Diagramm in einem BytesIO-Objekt
+    image_stream = BytesIO()
+    plt.savefig(image_stream, format='png')
+    image_stream.seek(0)
+
+    # Base64-Codierung für die Anzeige in HTML
+    encoded_image = base64.b64encode(image_stream.read()).decode('utf-8')
+
+    return f'data:image/png;base64,{encoded_image}'
 
 @app.route('/', methods=['GET', 'POST'])
 def anzeigen():
@@ -35,17 +59,22 @@ def anzeigen():
         cursor.execute('SELECT * FROM reuss ORDER BY id DESC LIMIT ? OFFSET ?', (entries_per_page, offset))
 
     daten = cursor.fetchall()
+    
+    # Zeitstempel in ein datetime-Objekt umwandeln
+    dates = [datetime.strptime(row[1], '%d.%m.%Y %H:%M') for row in daten]
+    
+    # Daten für den Chart vorbereiten
+    abflussData = [row[2] for row in daten]
 
     # Berechne die Gesamtanzahl der Seiten für die Paginierung
     cursor.execute('SELECT COUNT(*) FROM reuss')
     total_entries = cursor.fetchone()[0]
     total_pages = (total_entries // entries_per_page) + (1 if total_entries % entries_per_page > 0 else 0)
-    
-    # Verbindung schließen
-    connection.close()
 
     # HTML-Template rendern und Daten hergeben
-    return render_template('index.html', daten=daten, abfluss_filter=abfluss_filter, comparison_operator=comparison_operator, total_pages=total_pages, current_page=page)
+    chart_image = generate_plot(dates, abflussData)
+    connection.close()
+    return render_template('index.html', daten=daten, abfluss_filter=abfluss_filter, comparison_operator=comparison_operator, total_pages=total_pages, current_page=page, chart_image=generate_plot(dates, abflussData))
 
 if __name__ == '__main__':
     app.run(debug=True)

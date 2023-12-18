@@ -36,6 +36,24 @@
     </style>
 </head>
 <body>
+
+    <div>
+        {% if daten %}
+            {% set last_abfluss = daten[0][2] %}
+            {% if last_abfluss >= 400 %}
+                <p>Pls help me, I'm under the water. Check in again in a few days, too much water.</p>
+            {% elif last_abfluss >= 350 %}
+                <p>Bring that life jacket. Its fucking huge...</p>
+            {% elif last_abfluss >= 280 %}
+                <p>Better be patient. Its gonna be crowded...</p>
+            {% elif last_abfluss >= 180 %}
+                <p>Call in sick! Its surfable!</p>
+            {% else %}
+                <p>Keine Daten verfügbar.</p>
+            {% endif %}
+        {% endif %}
+    </div>
+
     <form method="post" action="/">
         <label for="abfluss_filter">Abfluss:</label>
         <input type="number" name="abfluss_filter" id="abfluss_filter" value="{{ abfluss_filter }}">
@@ -63,9 +81,9 @@
             {% for row in daten %}
                 <tr>
                     <td>{{ row[1] }}</td>
-                    <td class="{% if row[2]|int >= 350 %}firebrick-cell{% elif row[2]|int >= 300 %}darkred-cell{% elif row[2]|int >= 250 %}coral-cell{% elif row[2]|int >= 200 %}forestgreen-cell{% elif row[2]|int >= 180 %}mediumseagreen-cell{% elif row[2]|int >= 0 %}green-cell{% else %}{{ '' }}{% endif %}">{{ row[2] }}</td>
-                    <td>{{ row[3] }}</td>
-                    <td>{{ row[4] }}</td>
+                    <td class="{% if row[2]|int >= 350 %}firebrick-cell{% elif row[2]|int >= 300 %}darkred-cell{% elif row[2]|int >= 250 %}coral-cell{% elif row[2]|int >= 200 %}forestgreen-cell{% elif row[2]|int >= 180 %}mediumseagreen-cell{% elif row[2]|int >= 0 %}green-cell{% else %}{{ '' }}{% endif %}">{{ row[2] }} m³/s</td>
+                    <td>{{ row[3] }} m ü.M.</td>
+                    <td>{{ row[4] }} °C</td>
                 </tr>
             {% endfor %}
         </tbody>
@@ -86,6 +104,8 @@
             <a href="{{ url_for('anzeigen', page=current_page+1) }}" class="text-blue-500 hover:underline">Nächste &raquo;</a>
         {% endif %}
     </div>
+
+    <img src="{{ chart_image }}" alt="Abflussdaten Diagramm">
 
     <script>
         function clearFilter() {
