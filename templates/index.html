@@ -4,40 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Hier füge das Tailwind CSS ein, entweder lokal oder über einen CDN -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <title>Hydrodaten</title>
-    <style>
-        .green-cell {
-            background-color: lightgreen;
-        }
-        .darkgreen-cell {
-            background-color: darkgreen;
-        }
-        .mediumseagreen-cell {
-            background-color: mediumseagreen;
-        }
-        .forestgreen-cell {
-            background-color: forestgreen;
-        }
-        .coral-cell {
-            background-color: coral;
-        }
-        .darkred-cell {
-            background-color: darkred;
-        }
-        .firebrick-cell {
-            background-color: firebrick;
-        }
-
-        body{
-
-        }
-    </style>
 </head>
-<body>
+<body class="p-10">
 
-    <div>
+    <div class="flex items-center justify-center text-3xl font-bold">
         {% if daten %}
             {% set last_abfluss = daten[0][2] %}
             {% if last_abfluss >= 400 %}
@@ -54,58 +27,84 @@
         {% endif %}
     </div>
 
-    <form method="post" action="/">
-        <label for="abfluss_filter">Abfluss:</label>
-        <input type="number" name="abfluss_filter" id="abfluss_filter" value="{{ abfluss_filter }}">
-        
-        <!-- Dropdown-Menü für Vergleichsoperation -->
-        <select name="comparison_operator" id="comparison_operator">
-            <option value="greater_equal" {% if comparison_operator == 'greater_equal' %}selected{% endif %}>Größer oder gleich</option>
-            <option value="exact" {% if comparison_operator == 'exact' %}selected{% endif %}>Genau</option>
-        </select>
-        
-        <button type="submit">Filter anwenden</button>
-        <button type="submit" name="reset_filter" onclick="clearFilter()">Filter zurücksetzen</button>
-    </form>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Timestamp</th>
-                <th>Abfluss</th>
-                <th>Wasserstand</th>
-                <th>Temperatur</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for row in daten %}
-                <tr>
-                    <td>{{ row[1] }}</td>
-                    <td class="{% if row[2]|int >= 350 %}firebrick-cell{% elif row[2]|int >= 300 %}darkred-cell{% elif row[2]|int >= 250 %}coral-cell{% elif row[2]|int >= 200 %}forestgreen-cell{% elif row[2]|int >= 180 %}mediumseagreen-cell{% elif row[2]|int >= 0 %}green-cell{% else %}{{ '' }}{% endif %}">{{ row[2] }} m³/s</td>
-                    <td>{{ row[3] }} m ü.M.</td>
-                    <td>{{ row[4] }} °C</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-    <div class="flex mt-4">
-        {% if current_page > 1 %}
-            <a href="{{ url_for('anzeigen', page=current_page-1) }}" class="text-blue-500 hover:underline">&laquo; Vorherige</a>
-        {% endif %}
-        
-        <div class="flex-1 text-center space-x-2">
-            {% for page_num in range(1, total_pages + 1) %}
-                <a href="{{ url_for('anzeigen', page=page_num) }}" class="text-blue-500 hover:underline {% if page_num == current_page %}font-bold{% endif %}">{{ page_num }}</a>
-            {% endfor %}
-        </div>
-        
-        {% if current_page < total_pages %}
-            <a href="{{ url_for('anzeigen', page=current_page+1) }}" class="text-blue-500 hover:underline">Nächste &raquo;</a>
-        {% endif %}
+    <div class="flex items-center justify-center">
+        <img src="{{ chart_image }}" alt="Abflussdaten Diagramm">
     </div>
 
-    <img src="{{ chart_image }}" alt="Abflussdaten Diagramm">
+    <div class="flex flex-col items-center justify-center">
+        <div class="pb-5">
+            <form method="post" action="/">
+                <label for="abfluss_filter">Abfluss:</label>
+                <input class="border rounded-md p-1 focus:outline-none focus:border-blue-500" type="number" name="abfluss_filter" id="abfluss_filter" value="{{ abfluss_filter }}">
+                
+                <!-- Dropdown-Menü für Vergleichsoperation -->
+                <select name="comparison_operator" id="comparison_operator">
+                    <option value="greater_equal" {% if comparison_operator == 'greater_equal' %}selected{% endif %}>Größer oder gleich</option>
+                    <option value="exact" {% if comparison_operator == 'exact' %}selected{% endif %}>Genau</option>
+                </select>
+                
+                <button class="p-1 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded" type="submit">Filter anwenden</button>
+                <button class="p-1 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded" type="submit" type="submit" name="reset_filter" onclick="clearFilter()">Filter zurücksetzen</button>
+            </form>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Abfluss</th>
+                    <th>Wasserstand</th>
+                    <th>Temperatur</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in daten %}
+                    <tr>
+                        <td class="px-8 pb-1">{{ row[1] }}</td>
+                        <td class="{% if row[2]|int >= 350 %}firebrick-cell{% elif row[2]|int >= 300 %}darkred-cell{% elif row[2]|int >= 250 %}coral-cell{% elif row[2]|int >= 200 %}forestgreen-cell{% elif row[2]|int >= 180 %}mediumseagreen-cell{% elif row[2]|int >= 0 %}green-cell{% else %}{{ '' }}{% endif %} px-8 pb-1">{{ row[2] }} m³/s</td>
+                        <td class="px-8 pb-1">{{ row[3] }} m ü.M.</td>
+                        <td class="px-8 pb-1">{{ row[4] }} °C</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="flex pt-8">
+
+            <div class="px-5">
+                {% if current_page > 1 %}
+                    <a href="{{ url_for('anzeigen', page=current_page-1) }}" class="text-blue-500 hover:underline">&larr; Vorherige</a>
+                {% endif %}
+            </div>
+            
+            <div class="flex-1 text-center space-x-2">
+                {% for page_num in range(1, total_pages + 1) %}
+                    <a href="{{ url_for('anzeigen', page=page_num) }}" class="text-blue-500 hover:underline {% if page_num == current_page %}font-bold{% endif %}">{{ page_num }}</a>
+                {% endfor %}
+            </div>
+
+            <div class="px-5">
+                {% if current_page < total_pages %}
+                    <a href="{{ url_for('anzeigen', page=current_page+1) }}" class="text-blue-500 hover:underline">Nächste &rarr;</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center text-sm pt-5">
+        <p>Die Informationen auf dieser Website stammen von der folgenden Quelle:</p>
+        <ul>
+            <li>Quell-URL: <a href="https://www.hydrodaten.admin.ch/de/seen-und-fluesse/stationen-und-daten/2018" target="_blank">https://www.hydrodaten.admin.ch/de/seen-und-fluesse/stationen-und-daten/2018</a></li>
+        </ul>
+
+        <p>Diese Website ist ein Studentenprojekt im Rahmen des Moduls "Grundlagen Informationssysteme" an der Fachhochschule Graubünden (FHGR).</p>
+
+        <h2 class="font-semibold">Haftungsausschluss für Datenkorrektheit:</h2>
+        <ul>
+            <li>Die auf dieser Website dargestellten Daten dienen ausschließlich zu Bildungszwecken und stellen keine verbindlichen Informationen dar.</li>
+            <li>Es wird keine Gewähr für die Richtigkeit, Vollständigkeit oder Aktualität der bereitgestellten Informationen übernommen.</li>
+        </ul>
+    </div>
 
     <script>
         function clearFilter() {
