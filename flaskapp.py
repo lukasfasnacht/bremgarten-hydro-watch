@@ -1,3 +1,4 @@
+# Import div. Python Module für Webserver
 from flask import Flask, render_template, request
 import sqlite3
 import matplotlib.pyplot as plt
@@ -8,7 +9,10 @@ from datetime import datetime
 
 app = Flask(__name__)
 
+# Funktion für Generieren des Charts mit Matplot
 def generate_plot(dates, abflussData):
+    
+    # Definitiion Grösse,x/y-Achse, Titel, Datumsformat x-Achse
     plt.figure(figsize=(10, 6))
     plt.plot(dates, abflussData, marker="o", linestyle="-", color="blue")
     plt.xlabel("")
@@ -25,17 +29,21 @@ def generate_plot(dates, abflussData):
     # Base64-Codierung für die Anzeige in HTML
     encoded_image = base64.b64encode(image_stream.read()).decode("utf-8")
 
+    # Chart als Bild zurückgeben
     return f"data:image/png;base64,{encoded_image}"
 
+# Funktion für das Darstellen der Website
 @app.route("/", methods=["GET", "POST"])
 def anzeigen():
+    
     # SQLite-Datenbank verbinden
     connection = sqlite3.connect("hydrodata.db")
     cursor = connection.cursor()
 
     # Filter-Wert und Vergleichsoperator abrufen
     abfluss_filter = request.form.get("abfluss_filter")
-    comparison_operator = request.form.get("comparison_operator", "greater_equal")  # Standard: grösser gleich
+    # Standard-Operator: grösser gleich
+    comparison_operator = request.form.get("comparison_operator", "greater_equal")  
 
     # Filter zurücksetzen, wenn der entsprechende Button geklickt wurde
     if "reset_filter" in request.form:
@@ -60,10 +68,10 @@ def anzeigen():
 
     daten = cursor.fetchall()
     
-    # Zeitstempel in ein datetime-Objekt umwandeln
+    # Zeitstempel in ein Datetime-Objekt umwandeln und für den Chart in Variable dates abspeichern
     dates = [datetime.strptime(row[1], "%d.%m.%Y %H:%M") for row in daten]
     
-    # Daten für den Chart vorbereiten
+    # Abflussdaten für den Chart in Variable abflussData speichern
     abflussData = [row[2] for row in daten]
 
     # Berechne die Gesamtanzahl der Seiten für die Paginierung
