@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.svg') }}" type="image/x-icon">
     <!-- Lokales CSS File verlinkt, für Einfärbung Abfluss Zellen -->
-    <link rel="stylesheet" href="{{ url_for("static", filename="style.css") }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <!-- Tailwind wird verknüpft für generelles CSS Styling wie Padding, Formatting etc. -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <title>Bremgarten Surf</title>
@@ -29,7 +31,7 @@
         {% endif %}
     </div>
 
-    <!-- Chart wird geladen -->
+    <!-- Chart wird aufgerufen -->
     <div class="flex items-center justify-center">
         <img src="{{ chart_image }}" alt="Abflussdaten Diagramm">
     </div>
