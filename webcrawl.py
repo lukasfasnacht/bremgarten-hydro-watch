@@ -16,15 +16,16 @@ def crawl_and_save():
     }
     response = requests.get(url, headers=headers)
     
+    # Check ob die Website erfolgreich aufgerufen werden kann, sonst print Fehlermeldung
     if response.status_code == 200:
         html_content = response.text
         soup = BeautifulSoup(html_content, "html.parser")
 
-        # Suchen <table>-Element mit der gesuchten Klasse
+        # Suchen table-Element mit der gesuchten Klasse
         table = soup.find("table", class_="table-carousel sensors-table columns-3")
 
         if table:
-            # Das <table>-Element wurde gefunden
+            # Das table-Element wurde gefunden
             # Table wird in CSV abgespeichert
             rows = table.find_all("tr")
 
@@ -42,11 +43,13 @@ def crawl_and_save():
         print("Fehler beim Abrufen der Webseite.")
     
     
-    # Alle Zeilen bis auf die 2 löschen
-    # Liste zum Speichern der ausgewählten Zeile
+    # CSV Datei raw_data bearbeiten, alle Zeilen bis auf die 2e löschen und in neue CSV Datei clean_data speichern
+    
+    # Erstelle Liste zum Speichern der ausgewählten Zeile
     selected_row = None
 
-    with open("raw_data.csv", 'r', newline='') as csv_in:
+    # CSV Datei raw_data öffnen
+    with open("raw_data.csv", "r", newline="") as csv_in:
         reader = csv.reader(csv_in)
         
         # Iteriere durch jede Zeile und wähle die zweite Zeile aus
@@ -55,35 +58,35 @@ def crawl_and_save():
                 selected_row = row
                 break
 
-    # Schreibe die ausgewählte Zeile in die neue CSV-Datei
-    with open("clean_data.csv", 'w', newline='') as csv_out:
+    # Schreibe die ausgewählte Zeile in die neue CSV-Datei clean_data
+    with open("clean_data.csv", "w", newline="") as csv_out:
         writer = csv.writer(csv_out)
         writer.writerow(selected_row)
 
         
 
-    # CSV-Datei lesen um in DB zu speichern
+    # CSV-Datei lesen um in DB zu speichern - glaube kann gelöscht werden
     with open("clean_data.csv", "r", newline="", encoding="utf-8") as csvfile:
         csvreader = csv.reader(csvfile)
         daten = list(csvreader)
         
-    # Leerzeichen zwischen Letzter Messwert10.12.2023 und Datum einfügen
-    # Liste zum Speichern der ausgewählten Zeile
+    # Letzter Messwert aus dem Datum löschen
+    # Erstelle Liste zum Speichern der ausgewählten Zeile
     selected_row = None
 
-    with open("clean_data.csv", 'r', newline='') as csv_in:
+    with open("clean_data.csv", "r", newline="") as csv_in:
         reader = csv.reader(csv_in)
         
-        # Iteriere durch jede Zeile und wähle die zweite Zeile aus
+        # Iteriere durch jede Zeile und wähle die erste Zeile aus
         for index, row in enumerate(reader, start=1):
             if index == 1:
-                # Füge ein Leerzeichen zwischen "Letzter Messwert" und dem Datum ein
-                row[0] = row[0].replace('Letzter Messwert', '')
+                # Löscht Letzter Messwert
+                row[0] = row[0].replace("Letzter Messwert", "")
                 selected_row = row
                 break
 
     # Schreibe die ausgewählte Zeile in die CSV-Datei
-    with open("clean_data.csv", 'w', newline='') as csv_out:
+    with open("clean_data.csv", "w", newline="") as csv_out:
         writer = csv.writer(csv_out)
         writer.writerow(selected_row)
     

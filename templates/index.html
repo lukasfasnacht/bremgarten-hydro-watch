@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for("static", filename="style.css") }}">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <title>Hydrodaten</title>
 </head>
@@ -14,7 +14,7 @@
         {% if daten %}
             {% set last_abfluss = daten[0][2] %}
             {% if last_abfluss >= 400 %}
-                <p>Pls help me, I'm under the water. Check in again in a few days, too much water.</p>
+                <p>Pls help me, I"m under the water. Check in again in a few days, too much water.</p>
             {% elif last_abfluss >= 350 %}
                 <p>Bring that life jacket. Its fucking huge...</p>
             {% elif last_abfluss >= 280 %}
@@ -22,7 +22,7 @@
             {% elif last_abfluss >= 180 %}
                 <p>Call in sick! Its surfable!</p>
             {% else %}
-                <p>Keine Daten verfügbar.</p>
+                <p>Go back to work! It's flat...</p>
             {% endif %}
         {% endif %}
     </div>
@@ -39,8 +39,8 @@
                 
                 <!-- Dropdown-Menü für Vergleichsoperation -->
                 <select name="comparison_operator" id="comparison_operator">
-                    <option value="greater_equal" {% if comparison_operator == 'greater_equal' %}selected{% endif %}>Größer oder gleich</option>
-                    <option value="exact" {% if comparison_operator == 'exact' %}selected{% endif %}>Genau</option>
+                    <option value="greater_equal" {% if comparison_operator == "greater_equal" %}selected{% endif %}>Größer oder gleich</option>
+                    <option value="exact" {% if comparison_operator == "exact" %}selected{% endif %}>Genau</option>
                 </select>
                 
                 <button class="p-1 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded" type="submit">Filter anwenden</button>
@@ -61,7 +61,7 @@
                 {% for row in daten %}
                     <tr>
                         <td class="px-8 pb-1">{{ row[1] }}</td>
-                        <td class="{% if row[2]|int >= 350 %}firebrick-cell{% elif row[2]|int >= 300 %}darkred-cell{% elif row[2]|int >= 250 %}coral-cell{% elif row[2]|int >= 200 %}forestgreen-cell{% elif row[2]|int >= 180 %}mediumseagreen-cell{% elif row[2]|int >= 0 %}green-cell{% else %}{{ '' }}{% endif %} px-8 pb-1">{{ row[2] }} m³/s</td>
+                        <td class="{% if row[2]|int >= 350 %}firebrick-cell{% elif row[2]|int >= 300 %}darkred-cell{% elif row[2]|int >= 250 %}coral-cell{% elif row[2]|int >= 200 %}forestgreen-cell{% elif row[2]|int >= 180 %}mediumseagreen-cell{% elif row[2]|int >= 0 %}green-cell{% else %}{{ "" }}{% endif %} px-8 pb-1">{{ row[2] }} m³/s</td>
                         <td class="px-8 pb-1">{{ row[3] }} m ü.M.</td>
                         <td class="px-8 pb-1">{{ row[4] }} °C</td>
                     </tr>
@@ -73,19 +73,19 @@
 
             <div class="px-5">
                 {% if current_page > 1 %}
-                    <a href="{{ url_for('anzeigen', page=current_page-1) }}" class="text-blue-500 hover:underline">&larr; Vorherige</a>
+                    <a href="{{ url_for("anzeigen", page=current_page-1) }}" class="text-blue-500 hover:underline">&larr; Vorherige</a>
                 {% endif %}
             </div>
             
             <div class="flex-1 text-center space-x-2">
                 {% for page_num in range(1, total_pages + 1) %}
-                    <a href="{{ url_for('anzeigen', page=page_num) }}" class="text-blue-500 hover:underline {% if page_num == current_page %}font-bold{% endif %}">{{ page_num }}</a>
+                    <a href="{{ url_for("anzeigen", page=page_num) }}" class="text-blue-500 hover:underline {% if page_num == current_page %}font-bold{% endif %}">{{ page_num }}</a>
                 {% endfor %}
             </div>
 
             <div class="px-5">
                 {% if current_page < total_pages %}
-                    <a href="{{ url_for('anzeigen', page=current_page+1) }}" class="text-blue-500 hover:underline">Nächste &rarr;</a>
+                    <a href="{{ url_for("anzeigen", page=current_page+1) }}" class="text-blue-500 hover:underline">Nächste &rarr;</a>
                 {% endif %}
             </div>
         </div>
@@ -108,7 +108,7 @@
 
     <script>
         function clearFilter() {
-            document.getElementById('abfluss_filter').value = '';
+            document.getElementById("abfluss_filter").value = "";
         }
     </script>
 </body>
