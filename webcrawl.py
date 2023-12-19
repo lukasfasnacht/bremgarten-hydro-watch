@@ -62,13 +62,6 @@ def crawl_and_save():
     with open("clean_data.csv", "w", newline="") as csv_out:
         writer = csv.writer(csv_out)
         writer.writerow(selected_row)
-
-        
-
-    # CSV-Datei lesen um in DB zu speichern - glaube kann gelöscht werden
-    with open("clean_data.csv", "r", newline="", encoding="utf-8") as csvfile:
-        csvreader = csv.reader(csvfile)
-        daten = list(csvreader)
         
     # Letzter Messwert aus dem Datum löschen
     # Erstelle Liste zum Speichern der ausgewählten Zeile
@@ -99,7 +92,7 @@ def crawl_and_save():
     connection = sqlite3.connect("hydrodata.db")
     cursor = connection.cursor()
 
-    # Tabelle erstellen
+    # Tabelle erstellen falls noch nicht vorhanden
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS reuss (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -109,14 +102,12 @@ def crawl_and_save():
             temperatur REAL
         )
     """)
-    connection.commit()
 
     # Daten in die Datenbank einfügen ohne Primärschlüssel
     for datensatz in daten:
         cursor.execute("INSERT INTO reuss (timestamp, abfluss, wasserstand, temperatur) VALUES (?, ?, ?, ?)", datensatz)
 
-
-
+    # Änderungen speichern
     connection.commit()
 
     # Verbindung schließen
