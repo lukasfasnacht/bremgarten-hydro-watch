@@ -9,77 +9,90 @@ from datetime import datetime
 # Funktion zum Crawlen der Website und Speichern der Daten in einer CSV-Datei, CSV Daten bereinigen und in DB abspeichern
 def crawl_and_save():
     url = "https://www.hydrodaten.admin.ch/de/seen-und-fluesse/stationen-und-daten/2018"
-    response = requests.get(url)
-
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+        "Referer": "https://hydrodaten.admin.ch" 
+    }
+    response = requests.get(url, headers=headers)
+    
+    # Check ob die Website erfolgreich aufgerufen werden kann, sonst print Fehlermeldung
     if response.status_code == 200:
         html_content = response.text
+        soup = BeautifulSoup(html_content, "html.parser")
+
+        # Suchen table-Element mit der gesuchten Klasse
+        table = soup.find("table", class_="table-carousel sensors-table columns-3")
+
+        if table:
+            # Das table-Element wurde gefunden
+            # Table wird in CSV abgespeichert
+            rows = table.find_all("tr")
+
+            with open("raw_data.csv", "w", newline="", encoding="utf-8") as csvfile:
+                csvwriter = csv.writer(csvfile)
+
+                for row in rows:
+                    cells = row.find_all(["th", "td"])
+                    data = [cell.get_text(strip=True) for cell in cells]
+                    csvwriter.writerow(data)
+
+        else:
+            print("Die Tabelle wurde nicht gefunden.")
     else:
         print("Fehler beim Abrufen der Webseite.")
     
-    soup = BeautifulSoup(html_content, "html.parser")
+    
+    # CSV Datei raw_data bearbeiten, alle Zeilen bis auf die 2e löschen und in neue CSV Datei clean_data speichern
+    
+    # Erstelle Liste zum Speichern der ausgewählten Zeile
+    selected_row = None
 
-    # Suchen <table>-Element mit der gesuchten Klasse
-    table = soup.find("table", class_="table-carousel sensors-table columns-3")
-
-    if table:
-        # Das <table>-Element wurde gefunden
-        # Table wird in CSV abgespeichert
-        rows = table.find_all("tr")
+    # CSV Datei raw_data öffnen
+    with open("raw_data.csv", "r", newline="") as csv_in:
+        reader = csv.reader(csv_in)
         
-        with open("raw_data.csv", "w", newline="", encoding="utf-8") as csvfile:
-            csvwriter = csv.writer(csvfile)
-                    
-            for row in rows:
-                cells = row.find_all(["th", "td"])  # Hier werden sowohl Headerzellen ("th") als auch Datenzellen ("td") berücksichtigt
-                data = [cell.get_text() for cell in cells]
-                csvwriter.writerow(data)
-            
-    else:
-        print("Die Tabelle mit der Klasse" "table-carousel sensors-table columns-3" "wurde nicht gefunden.")
+        # Iteriere durch jede Zeile und wähle die zweite Zeile aus
+        for index, row in enumerate(reader, start=1):
+            if index == 2:
+                selected_row = row
+                break
 
-
-    # Öffnen Sie die CSV-Datei zum Lesen und eine neue CSV-Datei zum Schreiben
-    with open("raw_data.csv", "r", newline="", encoding="utf-8") as infile, \
-        open("clean_data.csv", "w", newline="", encoding="utf-8") as outfile:
+    # Schreibe die ausgewählte Zeile in die neue CSV-Datei clean_data
+    with open("clean_data.csv", "w", newline="") as csv_out:
+        writer = csv.writer(csv_out)
+        writer.writerow(selected_row)
         
-        # CSV-Reader und -Writer erstellen
-        csvreader = csv.reader(infile)
-        csvwriter = csv.writer(outfile)
+    # Letzter Messwert aus dem Datum löschen
+    # Erstelle Liste zum Speichern der ausgewählten Zeile
+    selected_row = None
+
+    with open("clean_data.csv", "r", newline="") as csv_in:
+        reader = csv.reader(csv_in)
         
-        # Erste Zeile löschen
-        zeilen_zum_loeschen = [0]  # Zeile 0 löschen
-        
-        for zeilennummer, row in enumerate(csvreader):
-            # Überprüfen ob die Zeile gelöscht werden soll
-            if zeilennummer not in zeilen_zum_loeschen:
-                # Für die verbleibenden Zeilen entfernen Zeilenumbrüche
-                bereinigte_zeile = [zelle.strip() for zelle in row]
-                csvwriter.writerow(bereinigte_zeile)
+        # Iteriere durch jede Zeile und wähle die erste Zeile aus
+        for index, row in enumerate(reader, start=1):
+            if index == 1:
+                # Löscht Letzter Messwert
+                row[0] = row[0].replace("Letzter Messwert", "")
+                selected_row = row
+                break
 
-    # Daten aus der CSV-Datei lesen
-    with open("clean_data.csv", "r", newline="", encoding="utf-8") as csv_datei:
-        csv_reader = csv.reader(csv_datei)
-        zeilen = list(csv_reader)
-
-    # \n in der ersten Zeile entfernen, wird im vorherigen bereinigen Schritt nicht richtig ausgeführt
-    zeilen[0][0] = zeilen[0][0].replace("\n", " ")
-
-    # Daten zurück in die CSV-Datei schreiben
-    with open("clean_data.csv", "w", newline="", encoding="utf-8") as csv_datei:
-        csv_writer = csv.writer(csv_datei)
-        csv_writer.writerows(zeilen)
-
+    # Schreibe die ausgewählte Zeile in die CSV-Datei
+    with open("clean_data.csv", "w", newline="") as csv_out:
+        writer = csv.writer(csv_out)
+        writer.writerow(selected_row)
+    
     # CSV-Datei lesen um in DB zu speichern
     with open("clean_data.csv", "r", newline="", encoding="utf-8") as csvfile:
         csvreader = csv.reader(csvfile)
         daten = list(csvreader)
 
-
     # SQLite-Datenbank verbinden
     connection = sqlite3.connect("hydrodata.db")
     cursor = connection.cursor()
 
-    # Tabelle erstellen
+    # Tabelle erstellen falls noch nicht vorhanden
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS reuss (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -89,14 +102,12 @@ def crawl_and_save():
             temperatur REAL
         )
     """)
-    connection.commit()
 
     # Daten in die Datenbank einfügen ohne Primärschlüssel
     for datensatz in daten:
         cursor.execute("INSERT INTO reuss (timestamp, abfluss, wasserstand, temperatur) VALUES (?, ?, ?, ?)", datensatz)
 
-
-
+    # Änderungen speichern
     connection.commit()
 
     # Verbindung schließen
@@ -105,7 +116,7 @@ def crawl_and_save():
     print("Daten in die Datenbank eingefügt")
 
 # Scheduler für alle halbe Stunde
-schedule.every(1).minutes.do(crawl_and_save)
+schedule.every(30).minutes.do(crawl_and_save)
 
 # Endlosschleife, um das Skript am Laufen zu halten
 while True:

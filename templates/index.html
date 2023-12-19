@@ -3,25 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daten Anzeigen</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.svg') }}" type="image/x-icon">
+    <!-- Lokales CSS File verlinkt, für Einfärbung Abfluss Zellen -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Tailwind wird verknüpft für generelles CSS Styling wie Padding, Formatting etc. -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>Bremgarten Surf</title>
 </head>
-<body>
-    <h1>Daten aus der Datenbank</h1>
-    <table>
-        <tr>
-            <th>Date</th>
-            <th>Abfluss</th>
-            <th>Wasserspiegel</th>
-            <th>Temperatur</th>
-        </tr>
-        {% for datensatz in daten %}
-            <tr>
-                <td>{{ datensatz[1] }}</td>
-                <td>{{ datensatz[2] }} m³/s</td>
-                <td>{{ datensatz[3] }} m ü.M.</td>
-                <td>{{ datensatz[4] }} °C</td>
-            </tr>
-        {% endfor %}
-    </table>
+<body class="p-10">
+
+    <!-- Welcome Text. Zeigt in einer kurzen Message an, ob es momentan möglich ist zu surfen oder nicht. Jenachdem wie der Abflusswert ist, wird die Nachricht angepasst -->
+    <div class="flex items-center justify-center text-3xl font-bold">
+        {% if daten %}
+            {% set last_abfluss = daten[0][2] %}
+            {% if last_abfluss >= 400 %}
+                <p>Pls help me, I"m under the water. Check in again in a few days, too much water.</p>
+            {% elif last_abfluss >= 350 %}
+                <p>Bring that life jacket. Its fucking huge...</p>
+            {% elif last_abfluss >= 280 %}
+                <p>Better be patient. Its gonna be crowded...</p>
+            {% elif last_abfluss >= 180 %}
+                <p>Call in sick! Its surfable!</p>
+            {% else %}
+                <p>Go back to work! It's flat...</p>
+            {% endif %}
+        {% endif %}
+    </div>
+
+    <!-- Chart wird aufgerufen -->
+    <div class="flex items-center justify-center">
+        <img src="{{ chart_image }}" alt="Abflussdaten Diagramm">
+    </div>
+
+    <!-- Wrapper für Tabelle, Filter und Navigation -->
+    <div class="flex flex-col items-center justify-center">
+        <!-- Wrapper für Filterfunktion -->
+        <div class="pb-5">
+            <form method="post" action="/">
+                <!-- Input Feld für den Vergleich mit dem Abfluss -->
+                <label for="abfluss_filter">Abfluss:</label>
+                <input class="border rounded-md p-1 focus:outline-none focus:border-blue-500" type="number" name="abfluss_filter" id="abfluss_filter" value="{{ abfluss_filter }}">
+                
+                <!-- Dropdown-Menü für Vergleichsoperation -->
+                <select name="comparison_operator" id="comparison_operator">
+                    <option value="greater_equal" {% if comparison_operator == "greater_equal" %}selected{% endif %}>Größer oder gleich</option>
+                    <option value="exact" {% if comparison_operator == "exact" %}selected{% endif %}>Genau</option>
+                </select>
+                
+                <!-- Button für das Anwenden des Filters -->
+                <button class="p-1 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded" type="submit">Filter anwenden</button>
+                <!-- Button für das Zurücksetzen des Filters -->
+                <button class="p-1 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded" type="submit" type="submit" name="reset_filter" onclick="clearFilter()">Filter zurücksetzen</button>
+            </form>
+        </div>
+
+        <!-- Wrapper für Tabelle -->
+        <table>
+            <!-- Kategorien Timespamp, Abflusss etc. -->
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Abfluss</th>
+                    <th>Wasserstand</th>
+                    <th>Temperatur</th>
+                </tr>
+            </thead>
+            <!-- Daten der Datenbank werden geladen und zusätzliche Infos wie Messgrösse wird hinzugefügt -->
+            <tbody>
+                {% for row in daten %}
+                    <tr>
+                        <td class="px-8 pb-1">{{ row[1] }}</td>
+                        <td class="{% if row[2]|int >= 350 %}firebrick-cell{% elif row[2]|int >= 300 %}darkred-cell{% elif row[2]|int >= 250 %}coral-cell{% elif row[2]|int >= 200 %}forestgreen-cell{% elif row[2]|int >= 180 %}mediumseagreen-cell{% elif row[2]|int >= 0 %}green-cell{% else %}{{ "" }}{% endif %} px-8 pb-1">{{ row[2] }} m³/s</td>
+                        <td class="px-8 pb-1">{{ row[3] }} m ü.M.</td>
+                        <td class="px-8 pb-1">{{ row[4] }} °C</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Wrapper für Navigation -->
+        <div class="flex pt-8">
+            <!-- Navigator Vorherige wird nur dargestellt wenn man nicht auf der ersten Seite ist -->
+            <div class="px-5">
+                {% if current_page > 1 %}
+                    <a href="{{ url_for("anzeigen", page=current_page-1) }}" class="text-blue-500 hover:underline">&larr; Vorherige</a>
+                {% endif %}
+            </div>
+            <!-- Seitennummerierung wird berechnet und dargestellt -->
+            <div class="flex-1 text-center space-x-2">
+                {% for page_num in range(1, total_pages + 1) %}
+                    <a href="{{ url_for("anzeigen", page=page_num) }}" class="text-blue-500 hover:underline {% if page_num == current_page %}font-bold{% endif %}">{{ page_num }}</a>
+                {% endfor %}
+            </div>
+            <!-- Navigator Nächste Seite wird nur dargestellt wenn nicht auf der letzten Seite -->
+            <div class="px-5">
+                {% if current_page < total_pages %}
+                    <a href="{{ url_for("anzeigen", page=current_page+1) }}" class="text-blue-500 hover:underline">Nächste &rarr;</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Wrapper Disclaimer -->
+    <div class="text-center text-sm pt-5">
+        <p>Die Informationen auf dieser Website stammen von der folgenden Quelle:</p>
+        <ul>
+            <li>Quell-URL: <a href="https://www.hydrodaten.admin.ch/de/seen-und-fluesse/stationen-und-daten/2018" target="_blank">https://www.hydrodaten.admin.ch/de/seen-und-fluesse/stationen-und-daten/2018</a></li>
+        </ul>
+
+        <p>Diese Website ist ein Studentenprojekt im Rahmen des Moduls "Grundlagen Informationssysteme" an der Fachhochschule Graubünden (FHGR).</p>
+
+        <h2 class="font-semibold">Haftungsausschluss für Datenkorrektheit:</h2>
+        <ul>
+            <li>Die auf dieser Website dargestellten Daten dienen ausschließlich zu Bildungszwecken und stellen keine verbindlichen Informationen dar.</li>
+            <li>Es wird keine Gewähr für die Richtigkeit, Vollständigkeit oder Aktualität der bereitgestellten Informationen übernommen.</li>
+        </ul>
+    </div>
+
+    <script>
+        // Sorgt dafür, dass das Input Feld durch Filter Zurücksetzen nichts mehr anzeigt
+        function clearFilter() {
+            document.getElementById("abfluss_filter").value = "";
+        }
+    </script>
 </body>
 </html>
