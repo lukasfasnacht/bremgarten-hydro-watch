@@ -1,15 +1,17 @@
-<!-- Dein HTML-Template (index.html) -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Lokales CSS File verlinkt, für Einfärbung Abfluss Zellen -->
     <link rel="stylesheet" href="{{ url_for("static", filename="style.css") }}">
+    <!-- Tailwind wird verknüpft für generelles CSS Styling wie Padding, Formatting etc. -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <title>Hydrodaten</title>
+    <title>Bremgarten Surf</title>
 </head>
 <body class="p-10">
 
+    <!-- Welcome Text. Zeigt in einer kurzen Message an, ob es momentan möglich ist zu surfen oder nicht. Jenachdem wie der Abflusswert ist, wird die Nachricht angepasst -->
     <div class="flex items-center justify-center text-3xl font-bold">
         {% if daten %}
             {% set last_abfluss = daten[0][2] %}
@@ -27,13 +29,17 @@
         {% endif %}
     </div>
 
+    <!-- Chart wird geladen -->
     <div class="flex items-center justify-center">
         <img src="{{ chart_image }}" alt="Abflussdaten Diagramm">
     </div>
 
+    <!-- Wrapper für Tabelle, Filter und Navigation -->
     <div class="flex flex-col items-center justify-center">
+        <!-- Wrapper für Filterfunktion -->
         <div class="pb-5">
             <form method="post" action="/">
+                <!-- Input Feld für den Vergleich mit dem Abfluss -->
                 <label for="abfluss_filter">Abfluss:</label>
                 <input class="border rounded-md p-1 focus:outline-none focus:border-blue-500" type="number" name="abfluss_filter" id="abfluss_filter" value="{{ abfluss_filter }}">
                 
@@ -43,12 +49,16 @@
                     <option value="exact" {% if comparison_operator == "exact" %}selected{% endif %}>Genau</option>
                 </select>
                 
+                <!-- Button für das Anwenden des Filters -->
                 <button class="p-1 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded" type="submit">Filter anwenden</button>
+                <!-- Button für das Zurücksetzen des Filters -->
                 <button class="p-1 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded" type="submit" type="submit" name="reset_filter" onclick="clearFilter()">Filter zurücksetzen</button>
             </form>
         </div>
 
+        <!-- Wrapper für Tabelle -->
         <table>
+            <!-- Kategorien Timespamp, Abflusss etc. -->
             <thead>
                 <tr>
                     <th>Timestamp</th>
@@ -57,6 +67,7 @@
                     <th>Temperatur</th>
                 </tr>
             </thead>
+            <!-- Daten der Datenbank werden geladen und zusätzliche Infos wie Messgrösse wird hinzugefügt -->
             <tbody>
                 {% for row in daten %}
                     <tr>
@@ -69,20 +80,21 @@
             </tbody>
         </table>
 
+        <!-- Wrapper für Navigation -->
         <div class="flex pt-8">
-
+            <!-- Navigator Vorherige wird nur dargestellt wenn man nicht auf der ersten Seite ist -->
             <div class="px-5">
                 {% if current_page > 1 %}
                     <a href="{{ url_for("anzeigen", page=current_page-1) }}" class="text-blue-500 hover:underline">&larr; Vorherige</a>
                 {% endif %}
             </div>
-            
+            <!-- Seitennummerierung wird berechnet und dargestellt -->
             <div class="flex-1 text-center space-x-2">
                 {% for page_num in range(1, total_pages + 1) %}
                     <a href="{{ url_for("anzeigen", page=page_num) }}" class="text-blue-500 hover:underline {% if page_num == current_page %}font-bold{% endif %}">{{ page_num }}</a>
                 {% endfor %}
             </div>
-
+            <!-- Navigator Nächste Seite wird nur dargestellt wenn nicht auf der letzten Seite -->
             <div class="px-5">
                 {% if current_page < total_pages %}
                     <a href="{{ url_for("anzeigen", page=current_page+1) }}" class="text-blue-500 hover:underline">Nächste &rarr;</a>
@@ -91,6 +103,7 @@
         </div>
     </div>
 
+    <!-- Wrapper Disclaimer -->
     <div class="text-center text-sm pt-5">
         <p>Die Informationen auf dieser Website stammen von der folgenden Quelle:</p>
         <ul>
@@ -107,6 +120,7 @@
     </div>
 
     <script>
+        // Sorgt dafür, dass das Input Feld durch Filter Zurücksetzen nichts mehr anzeigt
         function clearFilter() {
             document.getElementById("abfluss_filter").value = "";
         }
