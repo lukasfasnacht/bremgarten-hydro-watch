@@ -1,5 +1,5 @@
-.green-cell {
-  background-color: lightgreen;
+.white-cell {
+  background-color: white;
 }
 .darkgreen-cell {
   background-color: darkgreen;
@@ -13,9 +13,25 @@
 .coral-cell {
   background-color: coral;
 }
-.darkred-cell {
-  background-color: darkred;
-}
 .firebrick-cell {
   background-color: firebrick;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 10px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+}
+
+.legend-color {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+  border-radius: 50%;
 }
