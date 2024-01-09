@@ -15,7 +15,7 @@
   <h3 align="center">Semesterprojekt GLIN HS23 - Gruppe Sauvignon Blanc</h3>
 
   <p align="center">
-    Abstract Text blablabla
+    Dieses GitHub-Repository dient als Dokumentation für unser Semesterprojekt im Modul "Grundlagen von Informationssystemen". Das Projekt wurde von Cyrill Schmid, Noa Roth, Men Zimmermann, Lukas Fasnacht und Osaze Osa entwickelt. In dieser README finden Sie eine umfassende Beschreibung unserer Arbeit, einschließlich Projektziele, der verwendeten Technologien, Architektur, Funktionalitäten und Anwendungsfälle. Darüber hinaus bieten wir Anleitungen zur Installation und Nutzung unseres Informationssystems.
     <br />
     <a href="https://github.com/lukasfasnacht/GLIN/blob/master/README.md"><strong>Explore the docs »</strong></a>
     <br />
@@ -30,217 +30,394 @@
 
 
 
-<!-- TABLE OF CONTENTS -->
+<!-- Inhaltsverzeichnis  -->
 <details>
   <summary>Inhaltsverzeichnis</summary>
   <ol>
     <li>
-      <a href="#about-the-project">Über das Projekt</a>
+      <a href="#über-das-projekt">Über das Projekt</a>
       <ul>
-        <li><a href="#built-with">Built With</a></li>
+        <li><a href="#idee-und-problemstellung">Idee und Problemstellung</a></li>
+        <li><a href="#lösung">Lösung</a></li>
       </ul>
     </li>
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#voraussetzungen">Voraussetzungen</a></li>
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
+    <li><a href="#ressourcen">Ressourcen</a></li>
+    <li><a href="#lizenz">Lizenz</a></li>
+    <li><a href="#kontakt">Kontakt</a></li>
   </ol>
 </details>
 
 
 
-<!-- ABOUT THE PROJECT -->
-## About The Project
+<!-- Über das Projekt -->
+## Über das Projekt
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+[![Product Name Screen Shot][product-screenshot]](http://glin.lukasfasnacht.io)
 
-There are many great README templates available on GitHub; however, I didn't find one that really suited my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
-
-Here's why:
-* Your time should be focused on creating something amazing. A project that solves a problem and helps others
-* You shouldn't be doing the same tasks over and over like creating a README from scratch
-* You should implement DRY principles to the rest of your life :smile:
-
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have contributed to expanding this template!
-
-Use the `BLANK_README.md` to get started.
-
-1. Install the preset:
-
-    ```python
-    from flask import Flask, render_template, request
-    ```
+Im Rahmen des Moduls "Grundlagen von Informationssysteme" wurde die Aufgabe erlegt ein einfaches Informationssystem in Form einer im Web dargestellten Datenbank zu erstellen. Wie diese Aufgabe umgesetzt wird, war uns, den Studierenden, überlassen. Während des Projektes gab es die Möglichkeiten Webex Meetings, mit unserem Dozent Ingmar Baetge, aufzusetzen. Sonstige Unterstützung folgte in Form von Video Tutorials, erstellt von Ingmar Baetge. 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+### Idee und Problemstellung
 
+Da einge unserer Gruppe bereits seit einigen Jahren im Feld der Informatik arbeiten, haben wir uns dazu entschieden eine etwas umfangreicheres Projekt zu liefern. Damit es auch spannend bleibt und ein Lerneffekt entsteht. Die Idee war es Hydrodaten der admin.ch [Website](https://www.hydrodaten.admin.ch/de/seen-und-fluesse/stationen-und-daten/2018) herunterzuladen, auszuwerten und dann selbst darzustellen. Das Herunterladen der Daten sollte alle 30min erfolgen. Das Interesse galt dabei rein an den Daten, welche als Indikation dienten, ob es möglich ist im Fluss Reuss zu surfen. Als kurze Hintergrundinformation; die Reuss bietet an einer spezifischen stelle die Möglichkeit auf einer stehenden Welle zu surfen [Beispiel](https://www.youtube.com/watch?v=wut1fKHDnqQ), ähnlich wie z.B. der Eisbach in München. Das dies jedoch möglich ist, braucht es genügend Abfluss. Abfluss bedeutet wie viel Wasser (in m³) pro Sekunde durch die Messstation fliesst. Bei dem Fall der Flusswelle in Bremgarten braucht es mindestens einen Abfluss von 180m³. 
+Unsere Informatonssytem sollte also nun alle 30min Daten herunterladen, den Abflusswert einordnen, Daten aufbereiten und zusätzlich noch ein Chart der letzten Abflusswerte darzustellen.
 
-### Built With
+### Lösung
 
-This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
+Die Idee haben wir wie folgt umgesetzt:
 
-* [![Next][Next.js]][Next-url]
-* [![React][React.js]][React-url]
-* [![Vue][Vue.js]][Vue-url]
-* [![Angular][Angular.io]][Angular-url]
-* [![Svelte][Svelte.dev]][Svelte-url]
-* [![Laravel][Laravel.com]][Laravel-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
-* [![JQuery][JQuery.com]][JQuery-url]
+**Datenerhebung**<br>
+Um überhaupt Daten für die Darstellung zu haben, mussten diese zuerst gesammelt werden. Gleich wie bei einem Wetterbericht, bringt es nichts vergangene Daten zu erheben, sondern braucht es vorzu live Daten. Um dies umzusetzen wurde ein Python Script erstellt, welches mittels [BeautifulSoup](https://pypi.org/project/beautifulsoup4/), eine Python Library zum Crawlen von Websiten, alle 30min die Website www.hydrodaten.admin.ch/de/seen-und-fluesse/stationen-und-daten/2018 aufruft, eine definierte Tabelle der Website in eine lokale CSV Datei schreibt
+```python
+  if response.status_code == 200:
+        html_content = response.text
+        soup = BeautifulSoup(html_content, "html.parser")
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+        # Suchen table-Element mit der gesuchten Klasse
+        table = soup.find("table", class_="table-carousel sensors-table columns-3")
 
+        if table:
+            # Das table-Element wurde gefunden
+            # Table wird in CSV abgespeichert
+            rows = table.find_all("tr")
 
+            with open("raw_data.csv", "w", newline="", encoding="utf-8") as csvfile:
+                csvwriter = csv.writer(csvfile)
+
+                for row in rows:
+                    cells = row.find_all(["th", "td"])
+                    data = [cell.get_text(strip=True) for cell in cells]
+                    csvwriter.writerow(data)
+
+        else:
+            print("Die Tabelle wurde nicht gefunden.")
+    else:
+        print("Fehler beim Abrufen der Webseite.")
+``````
+die CSV Datei bereinigt
+```python
+# CSV Datei raw_data bearbeiten, alle Zeilen bis auf die 2e löschen und in neue CSV Datei clean_data speichern
+    
+    # Erstelle Liste zum Speichern der ausgewählten Zeile
+    selected_row = None
+
+    # CSV Datei raw_data öffnen
+    with open("raw_data.csv", "r", newline="") as csv_in:
+        reader = csv.reader(csv_in)
+        
+        # Iteriere durch jede Zeile und wähle die zweite Zeile aus
+        for index, row in enumerate(reader, start=1):
+            if index == 2:
+                selected_row = row
+                break
+
+    # Schreibe die ausgewählte Zeile in die neue CSV-Datei clean_data
+    with open("clean_data.csv", "w", newline="") as csv_out:
+        writer = csv.writer(csv_out)
+        writer.writerow(selected_row)
+        
+    # Letzter Messwert aus dem Datum löschen
+    # Erstelle Liste zum Speichern der ausgewählten Zeile
+    selected_row = None
+
+    with open("clean_data.csv", "r", newline="") as csv_in:
+        reader = csv.reader(csv_in)
+        
+        # Iteriere durch jede Zeile und wähle die erste Zeile aus
+        for index, row in enumerate(reader, start=1):
+            if index == 1:
+                # Löscht Letzter Messwert
+                row[0] = row[0].replace("Letzter Messwert", "")
+                selected_row = row
+                break
+
+    # Schreibe die ausgewählte Zeile in die CSV-Datei
+    with open("clean_data.csv", "w", newline="") as csv_out:
+        writer = csv.writer(csv_out)
+        writer.writerow(selected_row)
+``````
+sich mit einer lokalen Datenbank verbindet, die Daten der bereinigten CSV Datei in die Datenbank schreibt und die Verbindung zu Datenbank wieder schliesst.
+```python
+# CSV-Datei lesen um in DB zu speichern
+    with open("clean_data.csv", "r", newline="", encoding="utf-8") as csvfile:
+        csvreader = csv.reader(csvfile)
+        daten = list(csvreader)
+
+    # SQLite-Datenbank verbinden
+    connection = sqlite3.connect("hydrodata.db")
+    cursor = connection.cursor()
+
+    # Tabelle erstellen falls noch nicht vorhanden
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS reuss (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            timestamp TEXT,
+            abfluss INTEGER,
+            wasserstand REAL,
+            temperatur REAL
+        )
+    """)
+
+    # Daten in die Datenbank einfügen ohne Primärschlüssel
+    for datensatz in daten:
+        cursor.execute("INSERT INTO reuss (timestamp, abfluss, wasserstand, temperatur) VALUES (?, ?, ?, ?)", datensatz)
+
+    # Änderungen speichern
+    connection.commit()
+
+    # Verbindung schließen
+    connection.close()
+```
+Die Schwierigkeit hierbei war es das inzwischen viele Website einen Blocker für solche Crawl Scripts integriert haben. Es mussten also bei dem intialen Aufruf der Website, BeautifulSoup genug Daten im HTML Request Header mitgeben werden, damit die Website des Bundes das Gefühl hat hier möchte ein echter User auf die Website zugreifen und nicht irgendein Roboter (oder in diesem Fall Script).
+```python
+headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+        "Referer": "https://hydrodaten.admin.ch" 
+    }
+```
+
+**Datenbank**<br>
+Für dieses Projekt wurde auf eine eine SQLite Datenbank gesetzt, dies hat mehrere Gründe:
+<ul>
+  <li>Server-les Datenbank: SQLite ist eine Server-less Datenbank, das heisst es wird zusätzlich zur Datenbank keinen Datenbankserver benötigt.</li>
+  <li>Plattformunabhängig: SQLite läuft auf Windows, MacOS, sowie Linux. Das Ziel war es das Informationssystem schlussendlich auf einem Debian Server über aws laufen zu lassen, deshalb war es wichtig eine Datenbank zu haben, welche auf allen Plattformen funktionert.</li>
+  <li>Beliebtheit. SQLite erfreut sich einer hohen Beliebtheit und ist eine der meist verbreiteten Datenbanksystemen. Dies hat zum Vorteil das viele Ressourcen und Dokumentationen bereit stehen und die Chance das jemand das gleiche Problem wie man selbst hatte ist gross.</li>
+</ul>
+
+**Webserver**<br>
+Um das Ganze nun als HTML Seite darzustellen, wurde Flask verwendet. Mithilfe von Flask und der Python  Bibliothek [SQLite]() wurde eine Verbindung zur Datenbank aufgestellt, sowie wurden die Daten abgerufen, sortiert und der HTML Seite zur Darstellung weitergegeben. Zusätzlich wurden die Funktionen Suchen, bei dem der User entweder gleich oder grösser gleich nach einem selbst eingegeben Abflusswert suchen kann. Die Daten werden jeweils in 20er Pakete dargestellt und der User kann mittels Seitenanzahl in den verschiedenen Seiten navigieren. Die Daten werden nach dem Filter "Datum absteigend" angezeigt. 
+```python
+# Funktion für das Darstellen der Website
+@app.route("/", methods=["GET", "POST"])
+def anzeigen():
+    
+    # SQLite-Datenbank verbinden
+    connection = sqlite3.connect("hydrodata.db")
+    cursor = connection.cursor()
+
+    # Filter-Wert und Vergleichsoperator abrufen
+    abfluss_filter = request.form.get("abfluss_filter")
+    # Standard-Operator: grösser gleich
+    comparison_operator = request.form.get("comparison_operator", "greater_equal")  
+
+    # Filter zurücksetzen, wenn der entsprechende Button geklickt wurde
+    if "reset_filter" in request.form:
+        abfluss_filter = None
+        comparison_operator = "greater_equal"
+
+    # Paginierungsparameter
+    page = request.args.get("page", 1, type=int)
+    entries_per_page = 20
+
+    # Berechne den Offset basierend auf der Seitennummer
+    offset = (page - 1) * entries_per_page
+
+    # Datenbankabfrage mit Paginierung
+    if abfluss_filter is not None:
+        if comparison_operator == "exact":
+            cursor.execute("SELECT * FROM reuss WHERE abfluss = ? ORDER BY id DESC LIMIT ? OFFSET ?", (abfluss_filter, entries_per_page, offset))
+        elif comparison_operator == "greater_equal":
+            cursor.execute("SELECT * FROM reuss WHERE abfluss >= ? ORDER BY id DESC LIMIT ? OFFSET ?", (abfluss_filter, entries_per_page, offset))
+    else:
+        cursor.execute("SELECT * FROM reuss ORDER BY id DESC LIMIT ? OFFSET ?", (entries_per_page, offset))
+
+    daten = cursor.fetchall()
+    
+    # Zeitstempel in ein Datetime-Objekt umwandeln und für den Chart in Variable dates abspeichern
+    dates = [datetime.strptime(row[1], "%d.%m.%Y %H:%M") for row in daten]
+    
+    # Abflussdaten für den Chart in Variable abflussData speichern
+    abflussData = [row[2] for row in daten]
+
+    # Berechne die Gesamtanzahl der Seiten für die Paginierung
+    cursor.execute("SELECT COUNT(*) FROM reuss")
+    total_entries = cursor.fetchone()[0]
+    total_pages = (total_entries // entries_per_page) + (1 if total_entries % entries_per_page > 0 else 0)
+
+    # HTML-Template rendern und Daten hergeben
+    chart_image = generate_plot(dates, abflussData)
+    connection.close()
+    return render_template("index.html", daten=daten, abfluss_filter=abfluss_filter, comparison_operator=comparison_operator, total_pages=total_pages, current_page=page, chart_image=generate_plot(dates, abflussData))
+```
+Um das Chart zu erstellen wurde die Bibliothek [Matplotlib](https://matplotlib.org/) verwendet. Mithilfe denn Bibliotheken [BytesIO](https://wiki.python.org/moin/BytesIO) und [Base64](https://docs.python.org/3/library/base64.html) wurde der erstellte Chart in eine Bild Datei gespeichert und der HTML Datei weitergegeben.
+```python
+# Funktion für Generieren des Charts mit Matplot
+def generate_plot(dates, abflussData):
+    
+    # Definition Grösse,x/y-Achse, Titel, Datumsformat x-Achse
+    plt.figure(figsize=(10, 6))
+    plt.plot(dates, abflussData, marker="o", linestyle="-", color="blue")
+    plt.xlabel("")
+    plt.ylabel("Abfluss in m³/s")
+    plt.title("Abflussdaten der angezeigten Messwerte")
+    plt.gca().xaxis.set_major_formatter(plt.matplotlib.dates.DateFormatter("%d.%m.%Y %H:%M"))
+    plt.gcf().autofmt_xdate()
+
+    # Speichern Sie das Diagramm in einem BytesIO-Objekt
+    image_stream = BytesIO()
+    plt.savefig(image_stream, format="png")
+    image_stream.seek(0)
+
+    # Base64-Codierung für die Anzeige in HTML
+    encoded_image = base64.b64encode(image_stream.read()).decode("utf-8")
+
+    # Chart als Bild zurückgeben
+    return f"data:image/png;base64,{encoded_image}"
+```
+
+**Website**<br>
+Die Website wurde standardmässig mitfhilfe von HTML erstellt. Das Styling wurde mithilfe von [Tailwind](https://tailwindcss.com/) erreicht, zusätzliches spezifisches Styling wurde durch eine lokale CSS Datei erweitert. 
+Wenn man auf der Website landet ist das erste was man sieht ein kurzen Text, welcher indiziert wie die momentane Surf-Situation ist. Diese wurde mit einer einfachen IF-Funktion erstellt, indem der letzte Abfluss Wert verglichen wird.
+```html
+<!-- Welcome Text. Zeigt in einer kurzen Message an, ob es momentan möglich ist zu surfen oder nicht. Jenachdem wie der Abflusswert ist, wird die Nachricht angepasst -->
+    <div class="flex items-center justify-center text-3xl font-bold">
+        {% if daten %}
+            {% set last_abfluss = daten[0][2] %}
+            {% if last_abfluss >= 400 %}
+                <p>Pls help me, I"m under the water. Check in again in a few days, too much water.</p>
+            {% elif last_abfluss >= 350 %}
+                <p>Bring that life jacket. Its fucking huge...</p>
+            {% elif last_abfluss >= 280 %}
+                <p>Better be patient. Its gonna be crowded...</p>
+            {% elif last_abfluss >= 180 %}
+                <p>Call in sick! Its surfable!</p>
+            {% else %}
+                <p>Go back to work! It's flat...</p>
+            {% endif %}
+        {% endif %}
+    </div>
+```
+Zusätzlich zu der Willkommens-Nachricht, wird der Abflusswert eingefärbt, wenn der Abflusswert einen "surfbaren" Wert erreicht oder sogar ein gefährliches Niveau erreicht. Dies wurde wieder mit einer IF-Funktion erstellt, indem der Abfluss Wert verglichen wird und jenachdem eine spezifische CSS Klasse zuweist.
+```html
+<td class="{% if row[2]|int >= 450 %}firebrick-cell{% elif row[2]|int >= 400 %}coral-cell{% elif row[2]|int >= 350 %}darkgreen-cell{% elif row[2]|int >= 250 %}forestgreen-cell{% elif row[2]|int >= 180 %}mediumseagreen-cell{% elif row[2]|int >= 0 %}white-cell{% else %}{{ "" }}{% endif %} px-8 pb-1">{{ row[2] }} m³/s</td>
+```
+```css
+.white-cell {
+  background-color: white;
+}
+.darkgreen-cell {
+  background-color: darkgreen;
+}
+.mediumseagreen-cell {
+  background-color: mediumseagreen;
+}
+.forestgreen-cell {
+  background-color: forestgreen;
+}
+.coral-cell {
+  background-color: coral;
+}
+.firebrick-cell {
+  background-color: firebrick;
+}
+```
+Damit der User auch weiss, welche Farbe was zu bedeuten hat gibt es zusätzlich eine Legende. 
 
 <!-- GETTING STARTED -->
+
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+In den nächsten zwei Kapitel wird erklärt wie man die Webapplikation bei sich selbst lokal laufen lassen kann.
 
-### Prerequisites
+### Voraussetzungen
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
+Folgende Software und Bibliotheken sind notwendig für das Betreiben der Webapplikation:
+* Python: <br>
+  Über die [Python-Homepage](https://www.python.org/downloads/)<br>
+  Homebrew:
+    ```sh
+    brew install python
+    ```
+* requests
   ```sh
-  npm install npm@latest -g
+  pip3 install requests
+  ```
+* schedule
+  ```sh
+  pip3 install schedule
+  ```
+* BeautifulSoup
+  ```sh
+  pip3 install beautifulsoup4
+  ```
+* BeautifulSoup
+  ```sh
+  pip3 install beautifulsoup4
+  ```
+* Flask
+  ```sh
+  pip3 install Flask
+  ```
+* Matplotlib
+  ```sh
+  pip3 install matplotlib
   ```
 
 ### Installation
 
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
-
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+1. Klone dieses Repo
    ```sh
-   git clone https://github.com/your_username_/Project-Name.git
+   git clone https://github.com/lukasfasnacht/GLIN
    ```
-3. Install NPM packages
+2. Führe webcrawl.py im Hintergrund aus, optional mit Log output um das Skript zu überwachen
    ```sh
-   npm install
+   python3 script.py > output.log 2>&1 &
    ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
+3. Starte die Webapplikation
+   ```sh
+   python3 flaskapp.py
    ```
+4. Done, öffne http://127.0.0.1:5000/ in deinem Browser
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
+## Ressourcen
 
-<!-- USAGE EXAMPLES -->
-## Usage
+Folgende Ressourcen dienten zur Unterstützung dieses Projektes
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+* Ingmar Beatge und die Vorlesungsunterlagen zu GLIN
+* [Stackoverflow](https://stackoverflow.com/)
+* [Github-Copilot](https://github.com/features/copilot)
+* [Flask-Dokumentation](https://flask.palletsprojects.com/en/3.0.x/)
+* [Matplotlib-Dokumentation](https://matplotlib.org/stable/users/index)
+* [Tailwind-Dokumentation](https://v2.tailwindcss.com/docs)
+* [Tailwind-Tutorial](https://www.youtube.com/watch?v=pfaSUYaSgRo)
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
+## Lizenz
 
-<!-- ROADMAP -->
-## Roadmap
+Vertrieben unter der MIT-Lizenz. Weitere Informationen finden Sie in `LICENSE.txt`.
 
-- [x] Add Changelog
-- [x] Add back to top links
-- [ ] Add Additional Templates w/ Examples
-- [ ] Add "components" document to easily copy & paste sections of the readme
-- [ ] Multi-language Support
-    - [ ] Chinese
-    - [ ] Spanish
-
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
+## Kontakt
 
-<!-- CONTRIBUTING -->
-## Contributing
+Lukas Fasnacht  - email@example.com
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+Projekt Link: [https://github.com/lukasfasnacht/GLIN](https://github.com/lukasfasnacht/GLIN)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-
-<!-- LICENSE -->
-## License
-
-Distributed under the MIT License. See `LICENSE.txt` for more information.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- CONTACT -->
-## Contact
-
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
-
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- ACKNOWLEDGMENTS -->
-## Acknowledgments
-
-Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
-
-* [Choose an Open Source License](https://choosealicense.com)
-* [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-* [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
-* [Malven's Grid Cheatsheet](https://grid.malven.co/)
-* [Img Shields](https://shields.io)
-* [GitHub Pages](https://pages.github.com)
-* [Font Awesome](https://fontawesome.com)
-* [React Icons](https://react-icons.github.io/react-icons/search)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+<!-- Links  und Bilder -->
 [license-shield]: https://img.shields.io/github/license/lukasfasnacht/GLIN.svg?style=for-the-badge
 [license-url]: https://github.com/lukasfasnacht/GLIN/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/lukas-fasnacht-593a67156/
-[product-screenshot]: images/screenshot.png
-[Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
-[Next-url]: https://nextjs.org/
-[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
-[React-url]: https://reactjs.org/
-[Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
-[Vue-url]: https://vuejs.org/
-[Angular.io]: https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white
-[Angular-url]: https://angular.io/
-[Svelte.dev]: https://img.shields.io/badge/Svelte-4A4A55?style=for-the-badge&logo=svelte&logoColor=FF3E00
-[Svelte-url]: https://svelte.dev/
-[Laravel.com]: https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white
-[Laravel-url]: https://laravel.com
-[Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
-[Bootstrap-url]: https://getbootstrap.com
-[JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
-[JQuery-url]: https://jquery.com 
+[product-screenshot]: img/product-screenshot.png

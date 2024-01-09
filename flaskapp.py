@@ -12,7 +12,7 @@ app = Flask(__name__)
 # Funktion für Generieren des Charts mit Matplot
 def generate_plot(dates, abflussData):
     
-    # Definitiion Grösse,x/y-Achse, Titel, Datumsformat x-Achse
+    # Definition Grösse,x/y-Achse, Titel, Datumsformat x-Achse
     plt.figure(figsize=(10, 6))
     plt.plot(dates, abflussData, marker="o", linestyle="-", color="blue")
     plt.xlabel("")
