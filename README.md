@@ -364,15 +364,19 @@ Folgende Software und Bibliotheken sind notwendig für das Betreiben der Webappl
    ```sh
    git clone https://github.com/lukasfasnacht/GLIN
    ```
-2. Führe webcrawl.py im Hintergrund aus, optional mit Log output um das Skript zu überwachen
+2. Es befindet sich bereits ein kleinder Datensatz in der Datenbank, falls mit einer leeren Datenbank gestartet werden möchte sollte dieser Schritt ausgeführt werden. Ansonsten kann direkt mit 3. weitergemacht werden
+   ```sh
+   rm -r hydrodata.db
+   ```
+3. Führe webcrawl.py im Hintergrund aus, optional mit Log output um das Skript zu überwachen
    ```sh
    python3 script.py > output.log 2>&1 &
    ```
-3. Starte die Webapplikation
+4. Starte die Webapplikation
    ```sh
    python3 flaskapp.py
    ```
-4. Done, öffne http://127.0.0.1:5000/ in deinem Browser
+5. Done, öffne http://127.0.0.1:5000/ in deinem Browser
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
