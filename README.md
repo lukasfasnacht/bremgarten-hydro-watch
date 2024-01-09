@@ -55,15 +55,11 @@
 </details>
 
 
-
-<!-- Über das Projekt -->
 ## Über das Projekt
 
 [![Product Name Screen Shot][product-screenshot]](http://glin.lukasfasnacht.io)
 
 Im Rahmen des Moduls "Grundlagen von Informationssysteme" wurde die Aufgabe erlegt ein einfaches Informationssystem in Form einer im Web dargestellten Datenbank zu erstellen. Wie diese Aufgabe umgesetzt wird, war uns, den Studierenden, überlassen. Während des Projektes gab es die Möglichkeiten Webex Meetings, mit unserem Dozent Ingmar Baetge, aufzusetzen. Sonstige Unterstützung folgte in Form von Video Tutorials, erstellt von Ingmar Baetge. 
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Idee und Problemstellung
 
@@ -322,7 +318,7 @@ Zusätzlich zu der Willkommens-Nachricht, wird der Abflusswert eingefärbt, wenn
 ```
 Damit der User auch weiss, welche Farbe was zu bedeuten hat gibt es zusätzlich eine Legende. 
 
-<!-- GETTING STARTED -->
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Getting Started
 
