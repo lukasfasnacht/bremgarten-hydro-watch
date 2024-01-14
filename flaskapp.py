@@ -1,4 +1,4 @@
-# Import div. Python Module für Webserver
+# Import div. Python Module für den Webserver
 from flask import Flask, render_template, request
 import sqlite3
 import matplotlib.pyplot as plt
@@ -12,7 +12,7 @@ app = Flask(__name__)
 # Funktion für Generieren des Charts mit Matplot
 def generate_plot(dates, abflussData):
     
-    # Definitiion Grösse,x/y-Achse, Titel, Datumsformat x-Achse
+    # Definition Grösse,x/y-Achse, Titel, Datumsformat der x-Achse
     plt.figure(figsize=(10, 6))
     plt.plot(dates, abflussData, marker="o", linestyle="-", color="blue")
     plt.xlabel("")
@@ -79,7 +79,7 @@ def anzeigen():
     total_entries = cursor.fetchone()[0]
     total_pages = (total_entries // entries_per_page) + (1 if total_entries % entries_per_page > 0 else 0)
 
-    # HTML-Template rendern und Daten hergeben
+    # HTML-Template rendern und Daten übergeben
     chart_image = generate_plot(dates, abflussData)
     connection.close()
     return render_template("index.html", daten=daten, abfluss_filter=abfluss_filter, comparison_operator=comparison_operator, total_pages=total_pages, current_page=page, chart_image=generate_plot(dates, abflussData))

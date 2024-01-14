@@ -1,3 +1,4 @@
+# Import div. Python Module für das Crawlen der Daten von https://www.hydrodaten.admin.ch/de/seen-und-fluesse/stationen-und-daten/2018
 import csv
 import requests
 import schedule
@@ -21,7 +22,7 @@ def crawl_and_save():
         html_content = response.text
         soup = BeautifulSoup(html_content, "html.parser")
 
-        # Suchen table-Element mit der gesuchten Klasse
+        # Suchen table-Element mit der definierten Klasse
         table = soup.find("table", class_="table-carousel sensors-table columns-3")
 
         if table:
@@ -110,7 +111,7 @@ def crawl_and_save():
     # Änderungen speichern
     connection.commit()
 
-    # Verbindung schließen
+    # Verbindung schliessen
     connection.close()
     
     print("Daten in die Datenbank eingefügt")

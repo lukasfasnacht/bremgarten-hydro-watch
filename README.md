@@ -15,7 +15,7 @@
   <h3 align="center">Semesterprojekt GLIN HS23 - Gruppe Sauvignon Blanc</h3>
 
   <p align="center">
-    Dieses GitHub-Repository dient als Dokumentation für unser Semesterprojekt im Modul "Grundlagen von Informationssystemen". Das Projekt wurde von Cyrill Schmid, Noa Roth, Men Zimmermann, Lukas Fasnacht und Osaze Osa entwickelt. In dieser README finden Sie eine umfassende Beschreibung unserer Arbeit, einschließlich Projektziele, der verwendeten Technologien, Architektur, Funktionalitäten und Anwendungsfälle. Darüber hinaus bieten wir Anleitungen zur Installation und Nutzung unseres Informationssystems.
+    Dieses GitHub-Repository dient als Dokumentation für unser Semesterprojekt im Modul "Grundlagen von Informationssystemen". Das Projekt wurde von Lukas Fasnacht, Osaze Osa, Noa Roth, Cyrill Schmid und Men Zimmermann entwickelt. In dieser README finden Sie eine umfassende Beschreibung unserer Arbeit, einschließlich Projektziele, der verwendeten Technologien, Architektur, Funktionalitäten und Anwendungsfälle. Darüber hinaus bieten wir Anleitungen zur Installation und Nutzung unseres Informationssystems.
     <br />
     <a href="https://github.com/lukasfasnacht/GLIN/blob/master/README.md"><strong>Explore the docs »</strong></a>
     <br />
@@ -48,6 +48,7 @@
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
+    <li><a href="#bekannte-bugs">Bekannte Bugs</a></li>
     <li><a href="#ressourcen">Ressourcen</a></li>
     <li><a href="#lizenz">Lizenz</a></li>
     <li><a href="#kontakt">Kontakt</a></li>
@@ -345,10 +346,6 @@ Folgende Software und Bibliotheken sind notwendig für das Betreiben der Webappl
   ```sh
   pip3 install beautifulsoup4
   ```
-* BeautifulSoup
-  ```sh
-  pip3 install beautifulsoup4
-  ```
 * Flask
   ```sh
   pip3 install Flask
@@ -370,7 +367,7 @@ Folgende Software und Bibliotheken sind notwendig für das Betreiben der Webappl
    ```
 3. Führe webcrawl.py im Hintergrund aus, optional mit Log output um das Skript zu überwachen
    ```sh
-   python3 script.py > output.log 2>&1 &
+   python3 webcrawl.py > output.log 2>&1 &
    ```
 4. Starte die Webapplikation
    ```sh
@@ -380,6 +377,10 @@ Folgende Software und Bibliotheken sind notwendig für das Betreiben der Webappl
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+## Bekannte Bugs
+
+### Filter Funktion und Pagnierung
+Wenn man mitels der Filterfunktion einen Wert sucht, werden einem durch die Pagnierungsparameter nur die ersten 20 Values angezeigt. Wenn man nun mittels der Pagnierungs Navigation die Seite wechselt, wird auf der neuen Seite der Filtereffekt nicht angewendet. Dies hat zu Grunde das in der Grundstruktur die Pagnierungsfunktion unabhänig von der Filterfunktion funktioniert. Der Fehler wurde leider erst zu spät im Testing durch Cyrill Schmid entdeckt. Das Feature ist im nächsten Release geplant. 
 
 ## Ressourcen
 
@@ -408,7 +409,7 @@ Vertrieben unter der MIT-Lizenz. Weitere Informationen finden Sie in `LICENSE.tx
 
 ## Kontakt
 
-Lukas Fasnacht  - email@example.com
+Lukas Fasnacht  - lukas.fasnacht@gmail.com
 
 Projekt Link: [https://github.com/lukasfasnacht/GLIN](https://github.com/lukasfasnacht/GLIN)
 
