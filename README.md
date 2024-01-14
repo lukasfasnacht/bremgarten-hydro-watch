@@ -15,7 +15,7 @@
   <h3 align="center">Semesterprojekt GLIN HS23 - Gruppe Sauvignon Blanc</h3>
 
   <p align="center">
-    Dieses GitHub-Repository dient als Dokumentation für unser Semesterprojekt im Modul "Grundlagen von Informationssystemen". Das Projekt wurde von Lukas Fasnacht, Osaze Osa, Noa Roth, Cyrill Schmid und Men Zimmermann entwickelt. In dieser README finden Sie eine umfassende Beschreibung unserer Arbeit, einschließlich Projektziele, der verwendeten Technologien, Architektur, Funktionalitäten und Anwendungsfälle. Darüber hinaus bieten wir Anleitungen zur Installation und Nutzung unseres Informationssystems.
+    Dieses GitHub-Repository dient als Dokumentation für unser Semesterprojekt im Modul "Grundlagen von Informationssystemen". Das Projekt wurde von Lukas Fasnacht, Osaze Osa, Noa Roth, Cyrill Schmid und Men Zimmermann entwickelt. In dieser README finden Sie eine umfassende Beschreibung unserer Arbeit, einschliesslich Projektziele, der verwendeten Technologien, Architektur, Funktionalitäten und Anwendungsfälle. Darüber hinaus bieten wir Anleitungen zur Installation und Nutzung unseres Informationssystems.
     <br />
     <a href="https://github.com/lukasfasnacht/GLIN/blob/master/README.md"><strong>Explore the docs »</strong></a>
     <br />
@@ -170,7 +170,7 @@ sich mit einer lokalen Datenbank verbindet, die Daten der bereinigten CSV Datei 
     # Änderungen speichern
     connection.commit()
 
-    # Verbindung schließen
+    # Verbindung schliessen
     connection.close()
 ```
 Die Schwierigkeit hierbei war es das inzwischen viele Website einen Blocker für solche Crawl Scripts integriert haben. Es mussten also bei dem intialen Aufruf der Website, BeautifulSoup genug Daten im HTML Request Header mitgeben werden, damit die Website des Bundes das Gefühl hat hier möchte ein echter User auf die Website zugreifen und nicht irgendein Roboter (oder in diesem Fall Script).
@@ -381,6 +381,8 @@ Folgende Software und Bibliotheken sind notwendig für das Betreiben der Webappl
 
 ### Filter Funktion und Pagnierung
 Wenn man mitels der Filterfunktion einen Wert sucht, werden einem durch die Pagnierungsparameter nur die ersten 20 Values angezeigt. Wenn man nun mittels der Pagnierungs Navigation die Seite wechselt, wird auf der neuen Seite der Filtereffekt nicht angewendet. Dies hat zu Grunde das in der Grundstruktur die Pagnierungsfunktion unabhänig von der Filterfunktion funktioniert. Der Fehler wurde leider erst zu spät im Testing durch Cyrill Schmid entdeckt. Das Feature ist im nächsten Release geplant. 
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Ressourcen
 
