@@ -1,3 +1,5 @@
 # Ignoriere bestimmte Dateien
+.gitignore
 sandbox.csv
 sandbox.py
+*.DS_Store
