@@ -15,7 +15,7 @@
   <h3 align="center">Semesterprojekt GLIN HS23 - Gruppe Sauvignon Blanc</h3>
 
   <p align="center">
-    Dieses GitHub-Repository dient als Dokumentation für unser Semesterprojekt im Modul "Grundlagen von Informationssystemen". Das Projekt wurde von Lukas Fasnacht, Osaze Osa, Noa Roth, Cyrill Schmid und Men Zimmermann entwickelt. In dieser README finden Sie eine umfassende Beschreibung unserer Arbeit, einschliesslich Projektziele, der verwendeten Technologien, Architektur, Funktionalitäten und Anwendungsfälle. Darüber hinaus bieten wir Anleitungen zur Installation und Nutzung unseres Informationssystems.
+    Dieses GitHub-Repository dient als Dokumentation für unser Semesterprojekt im Modul "Grundlagen von Informationssystemen". In dieser README findet sich eine umfassende Beschreibung der Arbeit, einschließlich Projektziele, verwendeter Technologien, Architektur, Funktionalitäten und Anwendungsfälle. Darüber hinaus bieten Anleitungen zur Installation und Nutzung des Informationssystems.
     <br />
     <a href="https://github.com/lukasfasnacht/GLIN/blob/master/README.md"><strong>Explore the docs »</strong></a>
     <br />
@@ -64,12 +64,12 @@ Im Rahmen des Moduls "Grundlagen von Informationssysteme" wurde die Aufgabe erle
 
 ### Idee und Problemstellung
 
-Da einge unserer Gruppe bereits seit einigen Jahren im Feld der Informatik arbeiten, haben wir uns dazu entschieden eine etwas umfangreicheres Projekt zu liefern. Damit es auch spannend bleibt und ein Lerneffekt entsteht. Die Idee war es Hydrodaten der admin.ch [Website](https://www.hydrodaten.admin.ch/de/seen-und-fluesse/stationen-und-daten/2018) herunterzuladen, auszuwerten und dann selbst darzustellen. Das Herunterladen der Daten sollte alle 30min erfolgen. Das Interesse galt dabei rein an den Daten, welche als Indikation dienten, ob es möglich ist im Fluss Reuss zu surfen. Als kurze Hintergrundinformation; die Reuss bietet an einer spezifischen stelle die Möglichkeit auf einer stehenden Welle zu surfen [Beispiel](https://www.youtube.com/watch?v=wut1fKHDnqQ), ähnlich wie z.B. der Eisbach in München. Das dies jedoch möglich ist, braucht es genügend Abfluss. Abfluss bedeutet wie viel Wasser (in m³) pro Sekunde durch die Messstation fliesst. Bei dem Fall der Flusswelle in Bremgarten braucht es mindestens einen Abfluss von 180m³. 
-Unsere Informatonssytem sollte also nun alle 30min Daten herunterladen, den Abflusswert einordnen, Daten aufbereiten und zusätzlich noch ein Chart der letzten Abflusswerte darzustellen.
+Da bereits ein fundiertes Wissen in der Informatik und Softwareentwicklung vorhanden war, wurde entschieden eine etwas umfangreicheres Projekt zu liefern. Damit es auch spannend bleibt und ein Lerneffekt entsteht. Die Idee war es Hydrodaten der admin.ch [Website](https://www.hydrodaten.admin.ch/de/seen-und-fluesse/stationen-und-daten/2018) herunterzuladen, auszuwerten und dann selbst darzustellen. Das Herunterladen der Daten sollte alle 30min erfolgen. Das Interesse galt dabei rein an den Daten, welche als Indikation dienten, ob es möglich ist im Fluss Reuss zu surfen. Als kurze Hintergrundinformation; die Reuss bietet an einer spezifischen stelle die Möglichkeit auf einer stehenden Welle zu surfen [Beispiel](https://www.youtube.com/watch?v=wut1fKHDnqQ), ähnlich wie z.B. der Eisbach in München. Das dies jedoch möglich ist, braucht es genügend Abfluss. Abfluss bedeutet wie viel Wasser (in m³) pro Sekunde durch die Messstation fliesst. Bei dem Fall der Flusswelle in Bremgarten braucht es mindestens einen Abfluss von 180m³. 
+Das Informatonssytem sollte also nun alle 30min Daten herunterladen, den Abflusswert einordnen, Daten aufbereiten und zusätzlich noch ein Chart der letzten Abflusswerte darzustellen.
 
 ### Lösung
 
-Die Idee haben wir wie folgt umgesetzt:
+Die Idee wurde wie folgt umgesetzt:
 
 **Datenerhebung**<br>
 Um überhaupt Daten für die Darstellung zu haben, mussten diese zuerst gesammelt werden. Gleich wie bei einem Wetterbericht, bringt es nichts vergangene Daten zu erheben, sondern braucht es vorzu live Daten. Um dies umzusetzen wurde ein Python Script erstellt, welches mittels [BeautifulSoup](https://pypi.org/project/beautifulsoup4/), eine Python Library zum Crawlen von Websiten, alle 30min die Website www.hydrodaten.admin.ch/de/seen-und-fluesse/stationen-und-daten/2018 aufruft, eine definierte Tabelle der Website in eine lokale CSV Datei schreibt
@@ -380,7 +380,7 @@ Folgende Software und Bibliotheken sind notwendig für das Betreiben der Webappl
 ## Bekannte Bugs
 
 ### Filter Funktion und Pagnierung
-Wenn man mitels der Filterfunktion einen Wert sucht, werden einem durch die Pagnierungsparameter nur die ersten 20 Values angezeigt. Wenn man nun mittels der Pagnierungs Navigation die Seite wechselt, wird auf der neuen Seite der Filtereffekt nicht angewendet. Dies hat zu Grunde das in der Grundstruktur die Pagnierungsfunktion unabhänig von der Filterfunktion funktioniert. Der Fehler wurde leider erst zu spät im Testing durch Cyrill Schmid entdeckt. Das Feature ist im nächsten Release geplant. 
+Wenn man mitels der Filterfunktion einen Wert sucht, werden einem durch die Pagnierungsparameter nur die ersten 20 Values angezeigt. Wenn man nun mittels der Pagnierungs Navigation die Seite wechselt, wird auf der neuen Seite der Filtereffekt nicht angewendet. Dies hat zu Grunde das in der Grundstruktur die Pagnierungsfunktion unabhänig von der Filterfunktion funktioniert.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
