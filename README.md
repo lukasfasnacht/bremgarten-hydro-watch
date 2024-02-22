@@ -12,7 +12,7 @@
     <img src="static/favicon.svg" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">Semesterprojekt GLIN HS23 - Gruppe Sauvignon Blanc</h3>
+  <h3 align="center">Semesterprojekt GLIN HS23</h3>
 
   <p align="center">
     Dieses GitHub-Repository dient als Dokumentation für unser Semesterprojekt im Modul "Grundlagen von Informationssystemen". In dieser README findet sich eine umfassende Beschreibung der Arbeit, einschließlich Projektziele, verwendeter Technologien, Architektur, Funktionalitäten und Anwendungsfälle. Darüber hinaus bieten Anleitungen zur Installation und Nutzung des Informationssystems.
