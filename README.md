@@ -3,8 +3,6 @@
 [![MIT License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
-
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
@@ -12,10 +10,10 @@
     <img src="static/favicon.svg" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">Semesterprojekt GLIN HS23</h3>
+  <h3 align="center">Semester Project GLIN HS23</h3>
 
   <p align="center">
-    Dieses GitHub-Repository dient als Dokumentation für unser Semesterprojekt im Modul "Grundlagen von Informationssystemen". In dieser README findet sich eine umfassende Beschreibung der Arbeit, einschließlich Projektziele, verwendeter Technologien, Architektur, Funktionalitäten und Anwendungsfälle. Darüber hinaus bieten Anleitungen zur Installation und Nutzung des Informationssystems.
+    This GitHub repository serves as documentation for the semester project in the module "Fundamentals of Information Systems." This README provides a comprehensive description of the work, including project objectives, technologies used, architecture, functionalities, and use cases. Additionally, instructions for installation and usage of the information system are provided.
     <br />
     <a href="https://github.com/lukasfasnacht/GLIN/blob/master/README.md"><strong>Explore the docs »</strong></a>
     <br />
@@ -28,62 +26,58 @@
   </p>
 </div>
 
-
-
-<!-- Inhaltsverzeichnis  -->
+<!-- Table of Contents -->
 <details>
-  <summary>Inhaltsverzeichnis</summary>
+  <summary>Table of Contents</summary>
   <ol>
     <li>
-      <a href="#über-das-projekt">Über das Projekt</a>
+      <a href="#about-the-project">About the Project</a>
       <ul>
-        <li><a href="#idee-und-problemstellung">Idee und Problemstellung</a></li>
-        <li><a href="#lösung">Lösung</a></li>
+        <li><a href="#idea-and-problem-statement">Idea and Problem Statement</a></li>
+        <li><a href="#solution">Solution</a></li>
       </ul>
     </li>
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
-        <li><a href="#voraussetzungen">Voraussetzungen</a></li>
+        <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
-    <li><a href="#bekannte-bugs">Bekannte Bugs</a></li>
-    <li><a href="#ressourcen">Ressourcen</a></li>
-    <li><a href="#lizenz">Lizenz</a></li>
-    <li><a href="#kontakt">Kontakt</a></li>
+    <li><a href="#known-bugs">Known Bugs</a></li>
+    <li><a href="#resources">Resources</a></li>
+    <li><a href="#license">License</a></li>
+    <li><a href="#contact">Contact</a></li>
   </ol>
 </details>
 
-
-## Über das Projekt
+## About the Project
 
 [![Product Name Screen Shot][product-screenshot]](http://glin.lukasfasnacht.io)
 
-Im Rahmen des Moduls "Grundlagen von Informationssysteme" wurde die Aufgabe erlegt ein einfaches Informationssystem in Form einer im Web dargestellten Datenbank zu erstellen. Wie diese Aufgabe umgesetzt wird, war uns, den Studierenden, überlassen. Während des Projektes gab es die Möglichkeiten Webex Meetings, mit unserem Dozent Ingmar Baetge, aufzusetzen. Sonstige Unterstützung folgte in Form von Video Tutorials, erstellt von Ingmar Baetge. 
+As part of the "Fundamentals of Information Systems" module, the task was to create a simple information system in the form of a web-based database. The implementation of this task was left to the discretion of the students. During the project, there was the opportunity to set up Webex meetings with the instructor, Ingmar Baetge. Additional support was provided in the form of video tutorials created by Ingmar Baetge.
 
-### Idee und Problemstellung
+### Idea and Problem Statement
 
-Da bereits ein fundiertes Wissen in der Informatik und Softwareentwicklung vorhanden war, wurde entschieden eine etwas umfangreicheres Projekt zu liefern. Damit es auch spannend bleibt und ein Lerneffekt entsteht. Die Idee war es Hydrodaten der admin.ch [Website](https://www.hydrodaten.admin.ch/de/seen-und-fluesse/stationen-und-daten/2018) herunterzuladen, auszuwerten und dann selbst darzustellen. Das Herunterladen der Daten sollte alle 30min erfolgen. Das Interesse galt dabei rein an den Daten, welche als Indikation dienten, ob es möglich ist im Fluss Reuss zu surfen. Als kurze Hintergrundinformation; die Reuss bietet an einer spezifischen stelle die Möglichkeit auf einer stehenden Welle zu surfen [Beispiel](https://www.youtube.com/watch?v=wut1fKHDnqQ), ähnlich wie z.B. der Eisbach in München. Das dies jedoch möglich ist, braucht es genügend Abfluss. Abfluss bedeutet wie viel Wasser (in m³) pro Sekunde durch die Messstation fliesst. Bei dem Fall der Flusswelle in Bremgarten braucht es mindestens einen Abfluss von 180m³. 
-Das Informatonssytem sollte also nun alle 30min Daten herunterladen, den Abflusswert einordnen, Daten aufbereiten und zusätzlich noch ein Chart der letzten Abflusswerte darzustellen.
+Given the existing knowledge in computer science and software development, it was decided to deliver a more extensive project to keep the task challenging and educational. The idea was to download hydrological data from the admin.ch [website](https://www.hydrodaten.admin.ch/de/seen-und-fluesse/stationen-und-daten/2018), analyze it, and then display it independently. The data should be downloaded every 30 minutes. The focus was specifically on determining whether it would be possible to surf on the Reuss River based on the flow rate. As background information, the Reuss offers a standing wave at a specific spot that can be surfed [example](https://www.youtube.com/watch?v=wut1fKHDnqQ), similar to the Eisbach in Munich. To make surfing possible, there must be a minimum flow rate of 180 m³ per second. Therefore, the information system was designed to download the data every 30 minutes, categorize the flow rate, process the data, and additionally display a chart of the recent flow rates.
 
-### Lösung
+### Solution
 
-Die Idee wurde wie folgt umgesetzt:
+The idea was implemented as follows:
 
-**Datenerhebung**<br>
-Um überhaupt Daten für die Darstellung zu haben, mussten diese zuerst gesammelt werden. Gleich wie bei einem Wetterbericht, bringt es nichts vergangene Daten zu erheben, sondern braucht es vorzu live Daten. Um dies umzusetzen wurde ein Python Script erstellt, welches mittels [BeautifulSoup](https://pypi.org/project/beautifulsoup4/), eine Python Library zum Crawlen von Websiten, alle 30min die Website www.hydrodaten.admin.ch/de/seen-und-fluesse/stationen-und-daten/2018 aufruft, eine definierte Tabelle der Website in eine lokale CSV Datei schreibt
+**Data Collection**<br>
+To have data available for visualization, it first needed to be collected. Similar to a weather forecast, collecting only past data is not sufficient; live data is required. To achieve this, a Python script was created that uses [BeautifulSoup](https://pypi.org/project/beautifulsoup4/), a Python library for web scraping, to access the website www.hydrodaten.admin.ch/de/seen-und-fluesse/stationen-und-daten/2018 every 30 minutes, scrape a defined table from the website, and save it into a local CSV file.
 ```python
   if response.status_code == 200:
         html_content = response.text
         soup = BeautifulSoup(html_content, "html.parser")
 
-        # Suchen table-Element mit der gesuchten Klasse
+        # Find table element with the desired class
         table = soup.find("table", class_="table-carousel sensors-table columns-3")
 
         if table:
-            # Das table-Element wurde gefunden
-            # Table wird in CSV abgespeichert
+            # The table element was found
+            # Save table to CSV
             rows = table.find_all("tr")
 
             with open("raw_data.csv", "w", newline="", encoding="utf-8") as csvfile:
@@ -95,85 +89,84 @@ Um überhaupt Daten für die Darstellung zu haben, mussten diese zuerst gesammel
                     csvwriter.writerow(data)
 
         else:
-            print("Die Tabelle wurde nicht gefunden.")
+            print("The table was not found.")
     else:
-        print("Fehler beim Abrufen der Webseite.")
-``````
-die CSV Datei bereinigt
+        print("Error retrieving the webpage.")
+```
+Clean the CSV file by retaining only the second row and saving it to a new CSV file `clean_data`.
 ```python
-# CSV Datei raw_data bearbeiten, alle Zeilen bis auf die 2e löschen und in neue CSV Datei clean_data speichern
+# Edit raw_data CSV file, remove all rows except the second row, and save it to a new CSV file clean_data
     
-    # Erstelle Liste zum Speichern der ausgewählten Zeile
+    # Create a list to store the selected row
     selected_row = None
 
-    # CSV Datei raw_data öffnen
+    # Open the raw_data CSV file
     with open("raw_data.csv", "r", newline="") as csv_in:
         reader = csv.reader(csv_in)
         
-        # Iteriere durch jede Zeile und wähle die zweite Zeile aus
+        # Iterate through each row and select the second row
         for index, row in enumerate(reader, start=1):
             if index == 2:
                 selected_row = row
                 break
 
-    # Schreibe die ausgewählte Zeile in die neue CSV-Datei clean_data
+    # Write the selected row to the new CSV file clean_data
     with open("clean_data.csv", "w", newline="") as csv_out:
         writer = csv.writer(csv_out)
         writer.writerow(selected_row)
         
-    # Letzter Messwert aus dem Datum löschen
-    # Erstelle Liste zum Speichern der ausgewählten Zeile
+    # Remove 'Last Measurement' from the data
     selected_row = None
 
     with open("clean_data.csv", "r", newline="") as csv_in:
         reader = csv.reader(csv_in)
         
-        # Iteriere durch jede Zeile und wähle die erste Zeile aus
+        # Iterate through each row and select the first row
         for index, row in enumerate(reader, start=1):
             if index == 1:
-                # Löscht Letzter Messwert
+                # Remove 'Last Measurement'
                 row[0] = row[0].replace("Letzter Messwert", "")
                 selected_row = row
                 break
 
-    # Schreibe die ausgewählte Zeile in die CSV-Datei
+    # Write the selected row to the CSV file
     with open("clean_data.csv", "w", newline="") as csv_out:
         writer = csv.writer(csv_out)
         writer.writerow(selected_row)
-``````
-sich mit einer lokalen Datenbank verbindet, die Daten der bereinigten CSV Datei in die Datenbank schreibt und die Verbindung zu Datenbank wieder schliesst.
+```
+Connect to a local database, write the cleaned CSV data to the database, and close the connection.
 ```python
-# CSV-Datei lesen um in DB zu speichern
+# Read the CSV file to store it in the database
     with open("clean_data.csv", "r", newline="", encoding="utf-8") as csvfile:
         csvreader = csv.reader(csvfile)
-        daten = list(csvreader)
+        data = list(csvreader)
 
-    # SQLite-Datenbank verbinden
+    # Connect to SQLite database
     connection = sqlite3.connect("hydrodata.db")
     cursor = connection.cursor()
 
-    # Tabelle erstellen falls noch nicht vorhanden
+    # Create a table if it does not exist
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS reuss (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             timestamp TEXT,
-            abfluss INTEGER,
-            wasserstand REAL,
-            temperatur REAL
+            flow_rate INTEGER,
+            water_level REAL,
+            temperature REAL
         )
     """)
 
-    # Daten in die Datenbank einfügen ohne Primärschlüssel
-    for datensatz in daten:
-        cursor.execute("INSERT INTO reuss (timestamp, abfluss, wasserstand, temperatur) VALUES (?, ?, ?, ?)", datensatz)
+    # Insert data into the database without primary key
+    for record in data:
+        cursor.execute("INSERT INTO reuss (timestamp, flow_rate, water_level, temperature) VALUES (?, ?, ?, ?)", record)
 
-    # Änderungen speichern
+    # Save changes
     connection.commit()
 
-    # Verbindung schliessen
+    # Close connection
     connection.close()
 ```
-Die Schwierigkeit hierbei war es das inzwischen viele Website einen Blocker für solche Crawl Scripts integriert haben. Es mussten also bei dem intialen Aufruf der Website, BeautifulSoup genug Daten im HTML Request Header mitgeben werden, damit die Website des Bundes das Gefühl hat hier möchte ein echter User auf die Website zugreifen und nicht irgendein Roboter (oder in diesem Fall Script).
+One challenge was that many websites have blockers to prevent web scraping scripts. Therefore, during the initial request, BeautifulSoup had to provide enough information in the HTML request headers so that the government website would believe an actual user, rather than a bot (or script), was accessing it.
 ```python
 headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
@@ -182,118 +175,118 @@ headers = {
     }
 ```
 
-**Datenbank**<br>
-Für dieses Projekt wurde auf eine eine SQLite Datenbank gesetzt, dies hat mehrere Gründe:
+**Database**<br>
+An SQLite database was chosen for this project for several reasons:
 <ul>
-  <li>Server-les Datenbank: SQLite ist eine Server-less Datenbank, das heisst es wird zusätzlich zur Datenbank keinen Datenbankserver benötigt.</li>
-  <li>Plattformunabhängig: SQLite läuft auf Windows, MacOS, sowie Linux. Das Ziel war es das Informationssystem schlussendlich auf einem Debian Server über aws laufen zu lassen, deshalb war es wichtig eine Datenbank zu haben, welche auf allen Plattformen funktionert.</li>
-  <li>Beliebtheit. SQLite erfreut sich einer hohen Beliebtheit und ist eine der meist verbreiteten Datenbanksystemen. Dies hat zum Vorteil das viele Ressourcen und Dokumentationen bereit stehen und die Chance das jemand das gleiche Problem wie man selbst hatte ist gross.</li>
+  <li>Server-less Database: SQLite is a server-less database, which means that no additional database server is required.</li>
+  <li>Cross-Platform: SQLite works on Windows, macOS, and Linux. The goal was to ultimately run the information system on a Debian server via AWS, so it was important to use a database that works on all platforms.</li>
+  <li>Popularity: SQLite is highly popular and one of the most widely used database systems. This means there are many resources and documentation available, and it is likely that someone has already solved the same problem.</li>
 </ul>
 
-**Webserver**<br>
-Um das Ganze nun als HTML Seite darzustellen, wurde Flask verwendet. Mithilfe von Flask und der Python  Bibliothek [SQLite]() wurde eine Verbindung zur Datenbank aufgestellt, sowie wurden die Daten abgerufen, sortiert und der HTML Seite zur Darstellung weitergegeben. Zusätzlich wurden die Funktionen Suchen, bei dem der User entweder gleich oder grösser gleich nach einem selbst eingegeben Abflusswert suchen kann. Die Daten werden jeweils in 20er Pakete dargestellt und der User kann mittels Seitenanzahl in den verschiedenen Seiten navigieren. Die Daten werden nach dem Filter "Datum absteigend" angezeigt. 
+**Web Server**<br>
+To display the data as an HTML page, Flask was used. With the help of Flask and the Python library [SQLite](), a connection to the database was established, and data was retrieved, sorted, and passed to the HTML page for display. Additionally, functions were implemented to allow users to search for flow rates that are equal to or greater than a specified value. The data is displayed in sets of 20, and users can navigate through the pages using pagination. The data is displayed in descending date order.
 ```python
-# Funktion für das Darstellen der Website
+# Function to display the website
 @app.route("/", methods=["GET", "POST"])
-def anzeigen():
+def display():
     
-    # SQLite-Datenbank verbinden
+    # Connect to SQLite database
     connection = sqlite3.connect("hydrodata.db")
     cursor = connection.cursor()
 
-    # Filter-Wert und Vergleichsoperator abrufen
-    abfluss_filter = request.form.get("abfluss_filter")
-    # Standard-Operator: grösser gleich
+    # Retrieve filter value and comparison operator
+    flow_filter = request.form.get("flow_filter")
+    # Default operator: greater or equal
     comparison_operator = request.form.get("comparison_operator", "greater_equal")  
 
-    # Filter zurücksetzen, wenn der entsprechende Button geklickt wurde
+    # Reset filter if the corresponding button is clicked
     if "reset_filter" in request.form:
-        abfluss_filter = None
+        flow_filter = None
         comparison_operator = "greater_equal"
 
-    # Paginierungsparameter
+    # Pagination parameters
     page = request.args.get("page", 1, type=int)
     entries_per_page = 20
 
-    # Berechne den Offset basierend auf der Seitennummer
+    # Calculate offset based on page number
     offset = (page - 1) * entries_per_page
 
-    # Datenbankabfrage mit Paginierung
-    if abfluss_filter is not None:
+    # Database query with pagination
+    if flow_filter is not None:
         if comparison_operator == "exact":
-            cursor.execute("SELECT * FROM reuss WHERE abfluss = ? ORDER BY id DESC LIMIT ? OFFSET ?", (abfluss_filter, entries_per_page, offset))
+            cursor.execute("SELECT * FROM reuss WHERE flow_rate = ? ORDER BY id DESC LIMIT ? OFFSET ?", (flow_filter, entries_per_page, offset))
         elif comparison_operator == "greater_equal":
-            cursor.execute("SELECT * FROM reuss WHERE abfluss >= ? ORDER BY id DESC LIMIT ? OFFSET ?", (abfluss_filter, entries_per_page, offset))
+            cursor.execute("SELECT * FROM reuss WHERE flow_rate >= ? ORDER BY id DESC LIMIT ? OFFSET ?", (flow_filter, entries_per_page, offset))
     else:
         cursor.execute("SELECT * FROM reuss ORDER BY id DESC LIMIT ? OFFSET ?", (entries_per_page, offset))
 
-    daten = cursor.fetchall()
+    data = cursor.fetchall()
     
-    # Zeitstempel in ein Datetime-Objekt umwandeln und für den Chart in Variable dates abspeichern
-    dates = [datetime.strptime(row[1], "%d.%m.%Y %H:%M") for row in daten]
+    # Convert timestamp to a datetime object and store in the variable 'dates' for the chart
+    dates = [datetime.strptime(row[1], "%d.%m.%Y %H:%M") for row in data]
     
-    # Abflussdaten für den Chart in Variable abflussData speichern
-    abflussData = [row[2] for row in daten]
+    # Store flow data for the chart in variable 'flow_data'
+    flow_data = [row[2] for row in data]
 
-    # Berechne die Gesamtanzahl der Seiten für die Paginierung
+    # Calculate total number of pages for pagination
     cursor.execute("SELECT COUNT(*) FROM reuss")
     total_entries = cursor.fetchone()[0]
     total_pages = (total_entries // entries_per_page) + (1 if total_entries % entries_per_page > 0 else 0)
 
-    # HTML-Template rendern und Daten hergeben
-    chart_image = generate_plot(dates, abflussData)
+    # Render HTML template and pass data
+    chart_image = generate_plot(dates, flow_data)
     connection.close()
-    return render_template("index.html", daten=daten, abfluss_filter=abfluss_filter, comparison_operator=comparison_operator, total_pages=total_pages, current_page=page, chart_image=generate_plot(dates, abflussData))
+    return render_template("index.html", data=data, flow_filter=flow_filter, comparison_operator=comparison_operator, total_pages=total_pages, current_page=page, chart_image=generate_plot(dates, flow_data))
 ```
-Um das Chart zu erstellen wurde die Bibliothek [Matplotlib](https://matplotlib.org/) verwendet. Mithilfe denn Bibliotheken [BytesIO](https://wiki.python.org/moin/BytesIO) und [Base64](https://docs.python.org/3/library/base64.html) wurde der erstellte Chart in eine Bild Datei gespeichert und der HTML Datei weitergegeben.
+To create the chart, the [Matplotlib](https://matplotlib.org/) library was used. With the help of the libraries [BytesIO](https://wiki.python.org/moin/BytesIO) and [Base64](https://docs.python.org/3/library/base64.html), the created chart was saved as an image file and passed to the HTML file.
 ```python
-# Funktion für Generieren des Charts mit Matplot
-def generate_plot(dates, abflussData):
+# Function to generate the chart with Matplotlib
+def generate_plot(dates, flow_data):
     
-    # Definition Grösse,x/y-Achse, Titel, Datumsformat x-Achse
+    # Define size, x/y axis, title, date format of the x-axis
     plt.figure(figsize=(10, 6))
-    plt.plot(dates, abflussData, marker="o", linestyle="-", color="blue")
+    plt.plot(dates, flow_data, marker="o", linestyle="-", color="blue")
     plt.xlabel("")
-    plt.ylabel("Abfluss in m³/s")
-    plt.title("Abflussdaten der angezeigten Messwerte")
+    plt.ylabel("Flow rate in m³/s")
+    plt.title("Flow data of the displayed measurements")
     plt.gca().xaxis.set_major_formatter(plt.matplotlib.dates.DateFormatter("%d.%m.%Y %H:%M"))
     plt.gcf().autofmt_xdate()
 
-    # Speichern Sie das Diagramm in einem BytesIO-Objekt
+    # Save the chart in a BytesIO object
     image_stream = BytesIO()
     plt.savefig(image_stream, format="png")
     image_stream.seek(0)
 
-    # Base64-Codierung für die Anzeige in HTML
+    # Base64 encoding for display in HTML
     encoded_image = base64.b64encode(image_stream.read()).decode("utf-8")
 
-    # Chart als Bild zurückgeben
+    # Return chart as an image
     return f"data:image/png;base64,{encoded_image}"
 ```
 
 **Website**<br>
-Die Website wurde standardmässig mitfhilfe von HTML erstellt. Das Styling wurde mithilfe von [Tailwind](https://tailwindcss.com/) erreicht, zusätzliches spezifisches Styling wurde durch eine lokale CSS Datei erweitert. 
-Wenn man auf der Website landet ist das erste was man sieht ein kurzen Text, welcher indiziert wie die momentane Surf-Situation ist. Diese wurde mit einer einfachen IF-Funktion erstellt, indem der letzte Abfluss Wert verglichen wird.
+The website was created using standard HTML. Styling was achieved using [Tailwind](https://tailwindcss.com/), and additional specific styling was added through a local CSS file.
+Upon landing on the website, users are greeted with a short message indicating the current surf situation. This was implemented using a simple IF function that compares the latest flow rate.
 ```html
-<!-- Welcome Text. Zeigt in einer kurzen Message an, ob es momentan möglich ist zu surfen oder nicht. Jenachdem wie der Abflusswert ist, wird die Nachricht angepasst -->
+<!-- Welcome Text. Displays a short message indicating whether surfing is currently possible. The message changes based on the flow rate. -->
     <div class="flex items-center justify-center text-3xl font-bold">
-        {% if daten %}
-            {% set last_abfluss = daten[0][2] %}
-            {% if last_abfluss >= 400 %}
-                <p>Pls help me, I"m under the water. Check in again in a few days, too much water.</p>
-            {% elif last_abfluss >= 350 %}
-                <p>Bring that life jacket. Its fucking huge...</p>
-            {% elif last_abfluss >= 280 %}
-                <p>Better be patient. Its gonna be crowded...</p>
-            {% elif last_abfluss >= 180 %}
-                <p>Call in sick! Its surfable!</p>
+        {% if data %}
+            {% set last_flow_rate = data[0][2] %}
+            {% if last_flow_rate >= 400 %}
+                <p>Pls help me, I'm under the water. Check in again in a few days, too much water.</p>
+            {% elif last_flow_rate >= 350 %}
+                <p>Bring that life jacket. It's really high...</p>
+            {% elif last_flow_rate >= 280 %}
+                <p>Better be patient. It's going to be crowded...</p>
+            {% elif last_flow_rate >= 180 %}
+                <p>Call in sick! It's surfable!</p>
             {% else %}
                 <p>Go back to work! It's flat...</p>
             {% endif %}
         {% endif %}
     </div>
 ```
-Zusätzlich zu der Willkommens-Nachricht, wird der Abflusswert eingefärbt, wenn der Abflusswert einen "surfbaren" Wert erreicht oder sogar ein gefährliches Niveau erreicht. Dies wurde wieder mit einer IF-Funktion erstellt, indem der Abfluss Wert verglichen wird und jenachdem eine spezifische CSS Klasse zuweist.
+In addition to the welcome message, the flow rate is highlighted if it reaches a surfable or even a dangerous level. This was done using an IF function that compares the flow rate and assigns a specific CSS class accordingly.
 ```html
 <td class="{% if row[2]|int >= 450 %}firebrick-cell{% elif row[2]|int >= 400 %}coral-cell{% elif row[2]|int >= 350 %}darkgreen-cell{% elif row[2]|int >= 250 %}forestgreen-cell{% elif row[2]|int >= 180 %}mediumseagreen-cell{% elif row[2]|int >= 0 %}white-cell{% else %}{{ "" }}{% endif %} px-8 pb-1">{{ row[2] }} m³/s</td>
 ```
@@ -317,19 +310,19 @@ Zusätzlich zu der Willkommens-Nachricht, wird der Abflusswert eingefärbt, wenn
   background-color: firebrick;
 }
 ```
-Damit der User auch weiss, welche Farbe was zu bedeuten hat gibt es zusätzlich eine Legende. 
+To ensure the user understands what each color represents, a legend is also provided.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Getting Started
 
-In den nächsten zwei Kapitel wird erklärt wie man die Webapplikation bei sich selbst lokal laufen lassen kann.
+The following sections explain how to run the web application locally.
 
-### Voraussetzungen
+### Prerequisites
 
-Folgende Software und Bibliotheken sind notwendig für das Betreiben der Webapplikation:
+The following software and libraries are required to run the web application:
 * Python: <br>
-  Über die [Python-Homepage](https://www.python.org/downloads/)<br>
+  Available from the [Python Homepage](https://www.python.org/downloads/)<br>
   Homebrew:
     ```sh
     brew install python
@@ -357,68 +350,62 @@ Folgende Software und Bibliotheken sind notwendig für das Betreiben der Webappl
 
 ### Installation
 
-1. Klone dieses Repo
+1. Clone this repository
    ```sh
    git clone https://github.com/lukasfasnacht/GLIN
    ```
-2. Es befindet sich bereits ein kleinder Datensatz in der Datenbank, falls mit einer leeren Datenbank gestartet werden möchte sollte dieser Schritt ausgeführt werden. Ansonsten kann direkt mit 3. weitergemacht werden
+2. There is already a small dataset in the database; to start with an empty database, run the following command. Otherwise, proceed to step 3.
    ```sh
    rm -r hydrodata.db
    ```
-3. Führe webcrawl.py im Hintergrund aus, optional mit Log output um das Skript zu überwachen
+3. Run webcrawl.py in the background, optionally with log output to monitor the script
    ```sh
    python3 webcrawl.py > output.log 2>&1 &
    ```
-4. Starte die Webapplikation
+4. Start the web application
    ```sh
    python3 flaskapp.py
    ```
-5. Done, öffne http://127.0.0.1:5000/ in deinem Browser
+5. Done, open http://127.0.0.1:5000/ in your browser
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## Bekannte Bugs
+## Known Bugs
 
-### Filter Funktion und Pagnierung
-Wenn man mitels der Filterfunktion einen Wert sucht, werden einem durch die Pagnierungsparameter nur die ersten 20 Values angezeigt. Wenn man nun mittels der Pagnierungs Navigation die Seite wechselt, wird auf der neuen Seite der Filtereffekt nicht angewendet. Dies hat zu Grunde das in der Grundstruktur die Pagnierungsfunktion unabhänig von der Filterfunktion funktioniert.
+### Filter Function and Pagination
+When using the filter function to search for a value, only the first 20 values are displayed due to the pagination parameters. When navigating to a new page, the filter effect is not applied on the new page. This occurs because, in the basic structure, the pagination function works independently of the filter function.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## Ressourcen
+## Resources
 
-Folgende Ressourcen dienten zur Unterstützung dieses Projektes
+The following resources were used to support this project:
 
-* Ingmar Beatge und die Vorlesungsunterlagen zu GLIN
+* Ingmar Beatge and the lecture materials for GLIN
 * [Stackoverflow](https://stackoverflow.com/)
-* [Github-Copilot](https://github.com/features/copilot)
-* [Flask-Dokumentation](https://flask.palletsprojects.com/en/3.0.x/)
-* [Matplotlib-Dokumentation](https://matplotlib.org/stable/users/index)
-* [Tailwind-Dokumentation](https://v2.tailwindcss.com/docs)
-* [Tailwind-Tutorial](https://www.youtube.com/watch?v=pfaSUYaSgRo)
-
-
+* [Github Copilot](https://github.com/features/copilot)
+* [Flask Documentation](https://flask.palletsprojects.com/en/3.0.x/)
+* [Matplotlib Documentation](https://matplotlib.org/stable/users/index)
+* [Tailwind Documentation](https://v2.tailwindcss.com/docs)
+* [Tailwind Tutorial](https://www.youtube.com/watch?v=pfaSUYaSgRo)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+## License
 
-## Lizenz
-
-Vertrieben unter der MIT-Lizenz. Weitere Informationen finden Sie in `LICENSE.txt`.
-
+Distributed under the MIT License. For more information, see `LICENSE.txt`.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+## Contact
 
-## Kontakt
+Lukas Fasnacht - lukas.fasnacht@gmail.com
 
-Lukas Fasnacht  - lukas.fasnacht@gmail.com
-
-Projekt Link: [https://github.com/lukasfasnacht/GLIN](https://github.com/lukasfasnacht/GLIN)
+Project Link: [https://github.com/lukasfasnacht/GLIN](https://github.com/lukasfasnacht/GLIN)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-<!-- Links  und Bilder -->
+<!-- Links and Images -->
 [license-shield]: https://img.shields.io/github/license/lukasfasnacht/GLIN.svg?style=for-the-badge
 [license-url]: https://github.com/lukasfasnacht/GLIN/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
