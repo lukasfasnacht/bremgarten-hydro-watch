@@ -1,4 +1,4 @@
-# Import div. Python Module für das Crawlen der Daten von https://www.hydrodaten.admin.ch/de/seen-und-fluesse/stationen-und-daten/2018
+# Import various Python modules for crawling data from https://www.hydrodaten.admin.ch/de/seen-und-fluesse/stationen-und-daten/2018
 import csv
 import requests
 import schedule
@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 import sqlite3
 from datetime import datetime
 
-# Funktion zum Crawlen der Website und Speichern der Daten in einer CSV-Datei, CSV Daten bereinigen und in DB abspeichern
+# Function to crawl the website and save the data in a CSV file, clean CSV data, and store it in a database
 def crawl_and_save():
     url = "https://www.hydrodaten.admin.ch/de/seen-und-fluesse/stationen-und-daten/2018"
     headers = {
@@ -17,17 +17,17 @@ def crawl_and_save():
     }
     response = requests.get(url, headers=headers)
     
-    # Check ob die Website erfolgreich aufgerufen werden kann, sonst print Fehlermeldung
+    # Check if the website can be accessed successfully, otherwise print an error message
     if response.status_code == 200:
         html_content = response.text
         soup = BeautifulSoup(html_content, "html.parser")
 
-        # Suchen table-Element mit der definierten Klasse
-        table = soup.find("table", class_="table-carousel sensors-table columns-3")
+        # Find the table element with the defined class
+        table = soup.find("table", class_="table-carousel sensors-table columns-4")
 
         if table:
-            # Das table-Element wurde gefunden
-            # Table wird in CSV abgespeichert
+            # The table element was found
+            # Save the table to CSV
             rows = table.find_all("tr")
 
             with open("raw_data.csv", "w", newline="", encoding="utf-8") as csvfile:
@@ -39,87 +39,72 @@ def crawl_and_save():
                     csvwriter.writerow(data)
 
         else:
-            print("Die Tabelle wurde nicht gefunden.")
+            print("The table was not found.")
     else:
-        print("Fehler beim Abrufen der Webseite.")
+        print("Error retrieving the webpage.")
     
     
-    # CSV Datei raw_data bearbeiten, alle Zeilen bis auf die 2e löschen und in neue CSV Datei clean_data speichern
-    
-    # Erstelle Liste zum Speichern der ausgewählten Zeile
+    # Step 1: Select the second row from raw_data.csv (Last measurement)
     selected_row = None
 
-    # CSV Datei raw_data öffnen
     with open("raw_data.csv", "r", newline="") as csv_in:
         reader = csv.reader(csv_in)
         
-        # Iteriere durch jede Zeile und wähle die zweite Zeile aus
+        # Iterate through each row and select the second row
         for index, row in enumerate(reader, start=1):
             if index == 2:
                 selected_row = row
                 break
 
-    # Schreibe die ausgewählte Zeile in die neue CSV-Datei clean_data
-    with open("clean_data.csv", "w", newline="") as csv_out:
-        writer = csv.writer(csv_out)
-        writer.writerow(selected_row)
+    # Step 2: Modify the selected row (remove 'Last measurement' and the last column)
+    if selected_row:
+        # Remove "Last measurement" from the first value
+        selected_row[0] = selected_row[0].replace("Letzter Messwert", "").strip()
         
-    # Letzter Messwert aus dem Datum löschen
-    # Erstelle Liste zum Speichern der ausgewählten Zeile
-    selected_row = None
+        # Keep only the first 4 columns (remove the last column)
+        selected_row = selected_row[:4]
 
-    with open("clean_data.csv", "r", newline="") as csv_in:
-        reader = csv.reader(csv_in)
-        
-        # Iteriere durch jede Zeile und wähle die erste Zeile aus
-        for index, row in enumerate(reader, start=1):
-            if index == 1:
-                # Löscht Letzter Messwert
-                row[0] = row[0].replace("Letzter Messwert", "")
-                selected_row = row
-                break
-
-    # Schreibe die ausgewählte Zeile in die CSV-Datei
+    # Step 3: Write the cleaned row into clean_data.csv
     with open("clean_data.csv", "w", newline="") as csv_out:
         writer = csv.writer(csv_out)
         writer.writerow(selected_row)
     
-    # CSV-Datei lesen um in DB zu speichern
+    # Read CSV file to store in the database
     with open("clean_data.csv", "r", newline="", encoding="utf-8") as csvfile:
         csvreader = csv.reader(csvfile)
-        daten = list(csvreader)
+        data = list(csvreader)
 
-    # SQLite-Datenbank verbinden
+    # Connect to SQLite database
     connection = sqlite3.connect("hydrodata.db")
     cursor = connection.cursor()
 
-    # Tabelle erstellen falls noch nicht vorhanden
+    # Create table if it does not already exist
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS reuss (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             timestamp TEXT,
-            abfluss INTEGER,
-            wasserstand REAL,
-            temperatur REAL
+            flow_rate INTEGER,
+            water_level REAL,
+            temperature REAL
         )
     """)
 
-    # Daten in die Datenbank einfügen ohne Primärschlüssel
-    for datensatz in daten:
-        cursor.execute("INSERT INTO reuss (timestamp, abfluss, wasserstand, temperatur) VALUES (?, ?, ?, ?)", datensatz)
+    # Insert data into the database without primary key
+    for record in data:
+        cursor.execute("INSERT INTO reuss (timestamp, flow_rate, water_level, temperature) VALUES (?, ?, ?, ?)", record)
 
-    # Änderungen speichern
+    # Save changes
     connection.commit()
 
-    # Verbindung schliessen
+    # Close connection
     connection.close()
     
-    print("Daten in die Datenbank eingefügt")
+    print("Data inserted into the database")
 
-# Scheduler für alle halbe Stunde
+# Scheduler to run every 30 minutes
 schedule.every(30).minutes.do(crawl_and_save)
 
-# Endlosschleife, um das Skript am Laufen zu halten
+# Infinite loop to keep the script running
 while True:
     schedule.run_pending()
     time.sleep(1)
